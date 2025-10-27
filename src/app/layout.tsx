@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/Navbar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -25,11 +25,10 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
-
+        <Header />
         <div className="grid grid-cols-5 min-h-screen">
-          <Sidebar />
+          <div></div>
           <main className="col-span-3 px-6 py-6 ">
-            <Header />
             {children}
             <Footer />
           </main>

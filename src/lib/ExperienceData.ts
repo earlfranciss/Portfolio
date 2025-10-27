@@ -19,7 +19,7 @@ export const ExperienceData: Experience[] = [
     Co-developed a Profiling System to record employee skills, certifications, and career details, improving internal talent management.
     Built VueJS front-end components and Node.js APIs in an Agile team setup.
     `,
-    date: "Sept - Dec 2024",
+    date: "Sept 2024 - Dec 2024",
     link: "https://www.lanexcorp.com/",
   },
   {
