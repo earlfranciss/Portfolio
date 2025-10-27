@@ -31,7 +31,7 @@ export default function Header() {
           LinkedIn <MoveUpRight size={14} />
         </Link>
         <Link
-          href="/resume.pdf"
+          href="/Resume_ONG.pdf"
           target="_blank"
           className="flex items-center gap-1 text-sm text-gray-600 transition-all duration-300 hover:text-gray-400 hover:scale-105"
         >

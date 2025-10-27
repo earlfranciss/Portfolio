@@ -2,9 +2,9 @@ import ExperienceCard from "@/components/ExperienceCard";
 import { ExperienceData } from "../../lib/ExperienceData"
 
 export default function Experience() {
-    return (
+  return (
     <section className="relative space-y-6 pt-6 pb-8">
-                  {/* Gradient top border */}
+      {/* Gradient top border */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
       <h2 className="text-2xl font-bold text-center">Experience</h2>
