@@ -89,7 +89,7 @@ function RepoCard({ repo }: { repo: Repo }) {
       href={repo.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block border border-gray-700/40 rounded-xl p-4 hover:border-gray-500 hover:bg-gray-800/20 transition-all duration-300"
+      className="block border border-gray-700/40 rounded-xl p-4 hover:border-gray-400 hover:bg-gray-800/20 transition-all duration-300"
     >
       <h4 className="text-base font-semibold mb-1">{repo.name}</h4>
       <p className="text-xs text-gray-400 line-clamp-2">{repo.description}</p>
@@ -98,7 +98,7 @@ function RepoCard({ repo }: { repo: Repo }) {
         {/* Languages */}
         <div
           ref={containerRef}
-          className="relative flex gap-2 overflow-hidden max-w-[60%]"
+          className="relative flex gap-2 overflow-hidden max-w-[70%]"
         >
           <div className="flex shrink-0 gap-2">
             {repo.languages && repo.languages.length > 0 ? (
