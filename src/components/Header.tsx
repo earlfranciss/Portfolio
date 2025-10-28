@@ -26,14 +26,14 @@ export default function Header() {
         <Link
           href="https://www.linkedin.com/in/earl-francis-o-3370a3205"
           target="_blank"
-          className="flex items-center gap-1 text-sm text-gray-600 transition-all duration-300 hover:text-gray-400 hover:scale-105"
+          className="flex items-center gap-1 text-sm text-gray-400 transition-all duration-300 hover:text-gray-200 hover:scale-105"
         >
           LinkedIn <MoveUpRight size={14} />
         </Link>
         <Link
           href="/Resume_ONG.pdf"
           target="_blank"
-          className="flex items-center gap-1 text-sm text-gray-600 transition-all duration-300 hover:text-gray-400 hover:scale-105"
+          className="flex items-center gap-1 text-sm text-gray-400 transition-all duration-300 hover:text-gray-200 hover:scale-105"
         >
           Resume <MoveUpRight size={14} />
         </Link>
