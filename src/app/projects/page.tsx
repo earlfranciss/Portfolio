@@ -5,7 +5,6 @@ const bgColors = [
   "hover:bg-gradient-to-b from-purple-900/50 to-black/90 hover:from-blue-900/60 hover:to-black/40",
   "hover:bg-gradient-to-b from-blue-900/50 to-black/90 hover:from-teal-900/60 hover:to-black/40",
   "hover:bg-gradient-to-b from-green-900/50 to-black/90 hover:from-green-900/60 hover:to-black/40",
-  "hover:bg-gradient-to-b from-blue-900/50 to-black/90 hover:from-teal-900/60 hover:to-black/40",
 ];
 
 
