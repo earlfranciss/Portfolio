@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import HoverSlideshow from "@/components/HoverSlideshow";
 import TechIcons from "@/components/TechIcons";
-import BookingModal from"@/components/BookingModal";
+import BookingModal from "@/components/BookingModal";
+
 
 export default function About() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,12 +62,14 @@ export default function About() {
                     className="items-center mt-8" /> */}
                 <TechIcons />
                 <div className="flex justify-center items-center gap-6 pt-8">
-                    {/* Say Hello button */}
-                    <BookingModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
-
+             
+                    <div 
+        onClick={() => setIsModalOpen(true)}
+        className="flex items-center gap-2 rounded border-2 border-gray-400/20 text-sm px-4 py-2 cursor-pointer bg-gray-700/40 hover:bg-blue-600/40 hover:border-blue-400 text-gray-300 hover:text-gray-100 hover:scale-105 transition-all duration-300 font-semibold"
+      >
+        <span>Say Hello</span>
+        <span className="animate-wave inline-block">👋</span>
+      </div>
                     {/* Availability status */}
                     <div className="flex items-center gap-2">
 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse-glow" />
@@ -75,7 +78,11 @@ export default function About() {
                 </div>
             </div>
 
-            
+                   {/* Say Hello button */}
+                    <BookingModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
         </section>
     )
 }

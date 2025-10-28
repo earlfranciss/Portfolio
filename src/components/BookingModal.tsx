@@ -455,39 +455,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
 };
 
 
+export default BookingModal;
 
 
 
 
-// Example usage component
-export default function BookingExample() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  return (
-    <div className="flex items-center justify-center">
-      <div 
-        onClick={() => setIsModalOpen(true)}
-        className="flex items-center gap-2 rounded border-2 border-gray-400/20 text-sm px-4 py-2 cursor-pointer bg-gray-700/40 hover:bg-blue-600/40 hover:border-blue-400 text-gray-300 hover:text-gray-100 hover:scale-105 transition-all duration-300 font-semibold"
-      >
-        <span>Say Hello</span>
-        <span className="animate-wave inline-block">👋</span>
-      </div>
-
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
-      <style jsx>{`
-        @keyframes wave {
-          0%, 100% { transform: rotate(0deg); }
-          25% { transform: rotate(20deg); }
-          75% { transform: rotate(-20deg); }
-        }
-        .animate-wave {
-          animation: wave 1s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
-  );
-}
 
 
 
