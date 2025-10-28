@@ -28,7 +28,7 @@ export default function RootLayout({
         <Header />
         <div className="grid grid-cols-5 min-h-screen">
           <div></div>
-          <main className="col-span-3 px-6 py-6 ">
+          <main className="col-span-3 px-6 py-6 pt-16">
             {children}
             <Footer />
           </main>

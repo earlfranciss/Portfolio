@@ -3,7 +3,7 @@ import { ContactData } from "../../lib/ContactData";
 
 export default function Contact() {
   return (
-        <section className="relative space-y-6 pt-6 pb-8">
+        <section id="contact" className="scroll-mt-24 relative space-y-6 pt-6 pb-8">
       {/* Gradient top border */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 

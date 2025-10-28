@@ -1,7 +1,8 @@
 export default function About() {
     return (
+       <section id="about" className="scroll-mt-52  space-y-6">
 
-        <div className="text-lg mt-20 m-9 p-8 text-center text-gray-400 leading-relaxed">
+        <div className=" text-lg mt-20 m-9 p-8 text-center text-gray-400 leading-relaxed">
             I'm a <i className="text-slate-200 font-semibold">developer</i> by day and a
             <i className="text-slate-200 font-semibold"> lifter</i> by habit, based in
             <span className="text-slate-200 font-normal"> Cebu, Philippines</span>. <br />
@@ -15,6 +16,6 @@ export default function About() {
 
             
         </div>
-
+        </section>
     )
 }
