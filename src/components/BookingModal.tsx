@@ -22,8 +22,10 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-fadeIn">
         <button
+          type="button"
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+          aria-label="Close modal"
         >
           <X size={24} />
         </button>
@@ -45,7 +47,7 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
           {meetLink && (
             <div className="w-full bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6">
               <p className="text-sm text-gray-700 mb-1 font-medium">Your Google Meet Link:</p>
-              <a 
+              <a
                 href={meetLink}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -59,11 +61,10 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
 
           <button
             onClick={onClose}
-            className={`w-full py-3 text-base rounded-lg font-semibold transition ${
-              type === 'success'
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-red-600 text-white hover:bg-red-700'
-            }`}
+            className={`w-full py-3 text-base rounded-lg font-semibold transition ${type === 'success'
+              ? 'bg-green-600 text-white hover:bg-green-700'
+              : 'bg-red-600 text-white hover:bg-red-700'
+              }`}
           >
             {type === 'success' ? 'Great, thanks!' : 'Try Again'}
           </button>
@@ -75,14 +76,15 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
 
 
 const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
   const [duration, setDuration] = useState('15m');
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 9)); // October 2025
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [view, setView] = useState('calendar'); // 'calendar', 'time', 'confirm'
+  const [view, setView] = useState('calendar');
   const [statusModal, setStatusModal] = useState<{
     isOpen: boolean;
     type: 'success' | 'error';
@@ -99,7 +101,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
-  
+
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -108,67 +110,73 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     '11:00pm', '11:15pm', '11:30pm', '11:45pm'
   ];
 
-  const handleDateClick = (day) => {
+  const handleDateClick = (day: number) => {
     setSelectedDate(day);
     setView('time');
   };
 
-  const handleTimeClick = (time) => {
+  const handleTimeClick = (time: string) => {
     setSelectedTime(time);
     setView('confirm');
   };
 
- const handleBooking = async () => {
-  const bookingData = {
-    date: `${currentMonth.getFullYear()}-${(currentMonth.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${selectedDate.toString().padStart(2, "0")}`,
-    time: selectedTime,
-    duration,
-    name,
-    email,
-    message,
-  };
+  const handleBooking = async () => {
+    if (!selectedDate || !selectedTime) {
+      alert("Please select both date and time");
+      return;
+    }
 
-  try {
-    const response = await fetch("/api/calendar/create-event", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    });
+    const bookingData = {
+      date: `${currentMonth.getFullYear()}-${(currentMonth.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${selectedDate.toString().padStart(2, "0")}`,
+      time: selectedTime,
+      duration,
+      name,
+      email,
+      message,
+    };
 
-    const data = await response.json();
 
-    if (response.ok && data.success) {
-      setStatusModal({
-        isOpen: true,
-        type: "success",
-        title: "Booking Confirmed!",
-        message: "Your event has been successfully created in Google Calendar.",
-        meetLink: data.meetLink,
+    try {
+      const response = await fetch("/api/calendar/create-event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
       });
-    } else {
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatusModal({
+          isOpen: true,
+          type: "success",
+          title: "Booking Confirmed!",
+          message: "Your event has been successfully created in Google Calendar.",
+          meetLink: data.meetLink,
+        });
+      } else {
+        setStatusModal({
+          isOpen: true,
+          type: "error",
+          title: "Booking Failed",
+          message:
+            data.error ||
+            "We couldn't create your booking at the moment. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
       setStatusModal({
         isOpen: true,
         type: "error",
-        title: "Booking Failed",
-        message:
-          data.error ||
-          "We couldn't create your booking at the moment. Please try again.",
+        title: "Error Occurred",
+        message: "Something went wrong. Please try again later.",
       });
     }
-  } catch (error) {
-    console.error("Error creating booking:", error);
-    setStatusModal({
-      isOpen: true,
-      type: "error",
-      title: "Error Occurred",
-      message: "Something went wrong. Please try again later.",
-    });
-  }
-};
+  };
 
 
   const goToPreviousMonth = () => {
@@ -188,7 +196,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
       const day = i - firstDayOfMonth + 1;
       const isCurrentMonth = day > 0 && day <= daysInMonth;
       const isToday = day === 28;
-      
+
       days.push(
         <button
           key={i}
@@ -226,7 +234,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
           </h2>
 
           <div className="space-y-4 text-sm text-gray-700">
-            
+
             <p>
               So, you wanna chat? These days, I enjoy teaming up with startups and founders to help <span className="italic font-semibold">supercharge</span> their product and website design (with a little brand sprinkled in when needed).
             </p>
@@ -249,52 +257,52 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
         {/* Right Panel */}
         <div className="w-3/5 p-8 relative flex flex-col ">
           <button
+            type="button"
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+            aria-label="Close modal"
           >
             <X size={24} />
           </button>
           <div className='flex justify-between pt-4 items-center'>
-                            <div>
-          <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-            <Video size={18} className="text-blue-600" />
-            <span>Google Meet</span>
-          </div>
+            <div>
+              <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
+                <Video size={18} className="text-blue-600" />
+                <span>Google Meet</span>
+              </div>
 
-          <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-            <Globe size={18} />
-            <span>Asia/Manila</span>
-          </div>
-                </div>
+              <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
+                <Globe size={18} />
+                <span>Asia/Manila</span>
+              </div>
+            </div>
 
             {/* Duration Selection */}
-          <div className="flex items-center gap-2 mb-6">
-            <Clock size={20} className="text-gray-400" />
-            <button
-              onClick={() => setDuration('15m')}
-              className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
-                duration === '15m'
+            <div className="flex items-center gap-2 mb-6">
+              <Clock size={20} className="text-gray-400" />
+              <button
+                onClick={() => setDuration('15m')}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${duration === '15m'
                   ? 'bg-gray-200 text-gray-900'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-              }`}
-            >
-              15m
-            </button>
-            <button
-              onClick={() => setDuration('30m')}
-              className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
-                duration === '30m'
+                  }`}
+              >
+                15m
+              </button>
+              <button
+                onClick={() => setDuration('30m')}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${duration === '30m'
                   ? 'bg-gray-200 text-gray-900'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-              }`}
-            >
-              30m
-            </button>
-          </div>
+                  }`}
+              >
+                30m
+              </button>
+            </div>
 
 
           </div>
-          
+
 
           {/* Calendar View */}
           {view === 'calendar' && (
@@ -344,9 +352,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               </button>
 
 
-             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Tue {selectedDate}
-                </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Tue {selectedDate}
+              </h3>
 
 
 
@@ -418,7 +426,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full text-sm text-black  px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
-                    rows="3"
+                    rows={3}
                     placeholder="Tell me a bit about your project..."
                   />
                 </div>
@@ -431,23 +439,23 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                   Confirm Booking
                 </button>
               </div>
-              
+
             </div>
-            
+
           )}
 
-           <StatusModal
-        isOpen={statusModal.isOpen}
-        type={statusModal.type}
-        title={statusModal.title}
-        message={statusModal.message}
-        meetLink={statusModal.meetLink}
-        onClose={() => {
-          setStatusModal({ ...statusModal, isOpen: false });
-          if (statusModal.type === "success") onClose();
-        }}
-      />
-          
+          <StatusModal
+            isOpen={statusModal.isOpen}
+            type={statusModal.type}
+            title={statusModal.title}
+            message={statusModal.message}
+            meetLink={statusModal.meetLink}
+            onClose={() => {
+              setStatusModal({ ...statusModal, isOpen: false });
+              if (statusModal.type === "success") onClose();
+            }}
+          />
+
         </div>
       </div>
     </div>
