@@ -21,7 +21,7 @@ export default function HoverSlideshow({ images, label }: HoverSlideshowProps) {
       setTimeout(() => {
         setCurrent((prev) => (prev + 1) % images.length);
         setFade(true);
-      }, 200);
+      }, 150);
     }, 800);
 
     return () => clearInterval(interval);

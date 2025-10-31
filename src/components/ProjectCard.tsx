@@ -68,7 +68,12 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
           <p className="text-gray-500 py-2 text-base">{project.description}</p>
 
           <div className="mt-3">
-            <ImageSlider images={project.images} title={project.title} />
+            {/* ✅ Pass isHovered prop to ImageSlider */}
+            <ImageSlider 
+              images={project.images} 
+              title={project.title}
+              isHovered={isHovered}
+            />
           </div>
         </div>
       </div>
