@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, Globe, Video, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface BookingModalProps {
@@ -13,6 +15,11 @@ interface StatusModalProps {
   message: string;
   meetLink?: string;
   onClose: () => void;
+}
+
+interface BusyTime {
+  start: string;
+  end: string;
 }
 
 const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message, meetLink, onClose }) => {
@@ -61,10 +68,11 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
 
           <button
             onClick={onClose}
-            className={`w-full py-3 text-base rounded-lg font-semibold transition ${type === 'success'
-              ? 'bg-green-600 text-white hover:bg-green-700'
-              : 'bg-red-600 text-white hover:bg-red-700'
-              }`}
+            className={`w-full py-3 text-base rounded-lg font-semibold transition ${
+              type === 'success'
+                ? 'bg-green-600 text-white hover:bg-green-700'
+                : 'bg-red-600 text-white hover:bg-red-700'
+            }`}
           >
             {type === 'success' ? 'Great, thanks!' : 'Try Again'}
           </button>
@@ -74,17 +82,17 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
   );
 };
 
-
 const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-
   const [duration, setDuration] = useState('15m');
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 9)); // October 2025
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [view, setView] = useState('calendar');
+  const [busyTimes, setBusyTimes] = useState<BusyTime[]>([]);
+  const [loadingAvailability, setLoadingAvailability] = useState(false);
   const [statusModal, setStatusModal] = useState<{
     isOpen: boolean;
     type: 'success' | 'error';
@@ -97,18 +105,122 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     title: '',
     message: '',
   });
-  if (!isOpen) return null;
 
+  // ✅ ALL HOOKS MUST BE BEFORE ANY EARLY RETURNS
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
 
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
 
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
   const timeSlots = [
     '10:00pm', '10:15pm', '10:30pm', '10:45pm',
     '11:00pm', '11:15pm', '11:30pm', '11:45pm'
   ];
+
+  // ✅ Get today's date dynamically
+  const today = new Date();
+  const isCurrentMonthAndYear = 
+    currentMonth.getFullYear() === today.getFullYear() && 
+    currentMonth.getMonth() === today.getMonth();
+
+  // ✅ Get the day of week for selected date
+  const getSelectedDayOfWeek = (): string => {
+    if (!selectedDate) return '';
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDate);
+    return dayNames[date.getDay()];
+  };
+
+  const getSelectedDayOfWeekShort = (): string => {
+    if (!selectedDate) return '';
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDate);
+    return dayNamesShort[date.getDay()];
+  };
+
+  // ✅ Check availability when a date is selected
+  useEffect(() => {
+    if (selectedDate && view === 'time') {
+      checkAvailability();
+    }
+  }, [selectedDate, view, duration]); // Added duration as dependency
+
+  // ✅ NOW we can do early return AFTER all hooks
+  if (!isOpen) return null;
+
+  const checkAvailability = async () => {
+    if (!selectedDate) return;
+
+    setLoadingAvailability(true);
+    const dateString = `${currentMonth.getFullYear()}-${(currentMonth.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${selectedDate.toString().padStart(2, "0")}`;
+
+    try {
+      const response = await fetch("/api/calendar/check-availability", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ date: dateString }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setBusyTimes(data.busyTimes || []);
+      }
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    } finally {
+      setLoadingAvailability(false);
+    }
+  };
+
+  // ✅ Check if a time slot is available
+  const isTimeSlotAvailable = (timeSlot: string): boolean => {
+    if (!selectedDate || busyTimes.length === 0) return true;
+
+    // Parse the time slot
+    const timeMatch = timeSlot.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
+    if (!timeMatch) return true;
+
+    const [_, hours, minutes, period] = timeMatch;
+    let hour = parseInt(hours);
+    const minute = parseInt(minutes);
+
+    if (period.toLowerCase() === "pm" && hour !== 12) {
+      hour += 12;
+    } else if (period.toLowerCase() === "am" && hour === 12) {
+      hour = 0;
+    }
+
+    const durationMinutes = duration === "15m" ? 15 : 30;
+    const slotStart = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      selectedDate,
+      hour,
+      minute
+    );
+    const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60 * 1000);
+
+    // Check if this slot overlaps with any busy time
+    for (const busy of busyTimes) {
+      if (!busy.start || !busy.end) continue;
+
+      const busyStart = new Date(busy.start);
+      const busyEnd = new Date(busy.end);
+
+      // Check for overlap
+      if (slotStart < busyEnd && slotEnd > busyStart) {
+        return false; // Slot is busy
+      }
+    }
+
+    return true; // Slot is available
+  };
 
   const handleDateClick = (day: number) => {
     setSelectedDate(day);
@@ -116,6 +228,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleTimeClick = (time: string) => {
+    if (!isTimeSlotAvailable(time)) return; // Don't allow booking if slot is busy
     setSelectedTime(time);
     setView('confirm');
   };
@@ -136,7 +249,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
       email,
       message,
     };
-
 
     try {
       const response = await fetch("/api/calendar/create-event", {
@@ -178,7 +290,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-
   const goToPreviousMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   };
@@ -195,7 +306,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     for (let i = 0; i < rows * 7; i++) {
       const day = i - firstDayOfMonth + 1;
       const isCurrentMonth = day > 0 && day <= daysInMonth;
-      const isToday = day === 28;
+      // ✅ Check if this day is TODAY dynamically
+      const isToday = isCurrentMonthAndYear && day === today.getDate();
 
       days.push(
         <button
@@ -233,25 +345,27 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
             Hello again! 👋
           </h2>
 
-          <div className="space-y-4 text-sm text-gray-700">
-
+          <div className="">
+            <div className='space-y-4 text-sm text-gray-700 pb-4'>
             <p>
-              So, you wanna chat? These days, I enjoy teaming up with startups and founders to help <span className="italic font-semibold">supercharge</span> their product and website design (with a little brand sprinkled in when needed).
+              Looking to collaborate? I'm a software engineer passionate about
+              creating <span className="italic font-semibold">efficient solutions</span> and <span className="italic font-semibold">exploring new technologies</span>.
             </p>
 
             <p>
-              If you're building something cool or just wanna swap ideas hit me up!
+              Have a project in mind or just want to talk code?
+              I'm all ears!
             </p>
+            </div>
 
-            <div className="pt-4 border-t border-gray-300 mt-6">
+
+            <div className="pt-4 border-t border-gray-300 mt-8">
               <p className="text-xs text-gray-600">Prefer async? Shoot me an email at</p>
-              <a href="mailto:earlfrancisong@gmail.com" className="text-blue-600 hover:underline">
+              <a href="mailto:earlfrancisong@gmail.com" className="text-normal text-blue-600 hover:underline">
                 earlfrancisong@gmail.com
               </a>
             </div>
           </div>
-
-
         </div>
 
         {/* Right Panel */}
@@ -282,27 +396,26 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               <Clock size={20} className="text-gray-400" />
               <button
                 onClick={() => setDuration('15m')}
-                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${duration === '15m'
-                  ? 'bg-gray-200 text-gray-900'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-                  }`}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
+                  duration === '15m'
+                    ? 'bg-gray-200 text-gray-900'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
+                }`}
               >
                 15m
               </button>
               <button
                 onClick={() => setDuration('30m')}
-                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${duration === '30m'
-                  ? 'bg-gray-200 text-gray-900'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-                  }`}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
+                  duration === '30m'
+                    ? 'bg-gray-200 text-gray-900'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
+                }`}
               >
                 30m
               </button>
             </div>
-
-
           </div>
-
 
           {/* Calendar View */}
           {view === 'calendar' && (
@@ -351,28 +464,36 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 ← Back to calendar
               </button>
 
-
+              {/* ✅ Show correct day of week */}
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Tue {selectedDate}
+                {getSelectedDayOfWeekShort()} {selectedDate}
               </h3>
 
-
+              {loadingAvailability && (
+                <p className="text-sm text-gray-500 mb-2">Checking availability...</p>
+              )}
 
               <div className="space-y-2 max-h-96 overflow-y-auto">
-                {timeSlots.map(time => (
-                  <button
-                    key={time}
-                    onClick={() => handleTimeClick(time)}
-                    className="w-full py-2 px-4 text-sm border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition text-center text-gray-700 font-medium"
-                  >
-                    {time}
-                  </button>
-                ))}
+                {timeSlots.map(time => {
+                  const available = isTimeSlotAvailable(time);
+                  return (
+                    <button
+                      key={time}
+                      onClick={() => handleTimeClick(time)}
+                      disabled={!available}
+                      className={`w-full py-2 px-4 text-sm border-2 rounded-lg transition text-center font-medium ${
+                        available
+                          ? 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700'
+                          : 'border-gray-100 bg-gray-100 text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      {time}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
-
-
 
           {/* Confirmation View */}
           {view === 'confirm' && (
@@ -387,8 +508,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               <h3 className="text-lg font-semibold text-gray-900 mb-1">
                 Confirm your booking
               </h3>
+              {/* ✅ Show correct day of week in confirmation */}
               <p className="text-sm text-gray-600 mb-2">
-                Tuesday, October {selectedDate}, 2025 at {selectedTime}
+                {getSelectedDayOfWeek()}, {monthNames[currentMonth.getMonth()]} {selectedDate}, {currentMonth.getFullYear()} at {selectedTime}
               </p>
 
               <div className="space-y-2">
@@ -439,9 +561,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                   Confirm Booking
                 </button>
               </div>
-
             </div>
-
           )}
 
           <StatusModal
@@ -455,20 +575,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               if (statusModal.type === "success") onClose();
             }}
           />
-
         </div>
       </div>
     </div>
   );
 };
 
-
 export default BookingModal;
-
-
-
-
-
-
-
-

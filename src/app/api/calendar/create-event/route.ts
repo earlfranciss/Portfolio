@@ -1,19 +1,63 @@
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { date, time, duration, name, email, message } = body;
 
-    const [year, month, day] = date.split("-");
-    const [hours, minutes] = time.replace(/(am|pm)/, "").split(":");
-    let hour = parseInt(hours);
-    if (time.includes("pm") && hour !== 12) hour += 12;
+    console.log("Received booking request:", { date, time, duration, name, email });
 
-    const startDateTime = new Date(year, month - 1, day, hour, parseInt(minutes));
+    // ✅ Parse time correctly - handle both "2:00pm" and "14:00" formats
+    let hour: number;
+    let minute: number;
+
+    if (time.toLowerCase().includes("am") || time.toLowerCase().includes("pm")) {
+      // 12-hour format: "2:00pm"
+      const timeMatch = time.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);
+      if (!timeMatch) {
+        throw new Error(`Invalid time format: ${time}`);
+      }
+
+      const [_, hours, minutes, period] = timeMatch;
+      hour = parseInt(hours);
+      minute = parseInt(minutes);
+
+      // Convert to 24-hour format
+      if (period.toLowerCase() === "pm" && hour !== 12) {
+        hour += 12;
+      } else if (period.toLowerCase() === "am" && hour === 12) {
+        hour = 0;
+      }
+    } else {
+      // 24-hour format: "14:00"
+      const [hours, minutes] = time.split(":");
+      hour = parseInt(hours);
+      minute = parseInt(minutes);
+    }
+
+    // ✅ Create datetime strings in local timezone (no conversion)
+    const paddedHour = hour.toString().padStart(2, "0");
+    const paddedMinute = minute.toString().padStart(2, "0");
+    const startDateTimeString = `${date}T${paddedHour}:${paddedMinute}:00`;
+
+    // ✅ Calculate end time
     const durationMinutes = duration === "15m" ? 15 : 30;
-    const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60000);
+    
+    const [year, month, day] = date.split("-").map(Number);
+    const startDate = new Date(year, month - 1, day, hour, minute);
+    const endDate = new Date(startDate.getTime() + durationMinutes * 60 * 1000);
+    
+    const endHour = endDate.getHours().toString().padStart(2, "0");
+    const endMinute = endDate.getMinutes().toString().padStart(2, "0");
+    const endDay = endDate.getDate().toString().padStart(2, "0");
+    const endMonth = (endDate.getMonth() + 1).toString().padStart(2, "0");
+    const endYear = endDate.getFullYear();
+    const endDateString = `${endYear}-${endMonth}-${endDay}`;
+    const endDateTimeString = `${endDateString}T${endHour}:${endMinute}:00`;
+
+    console.log("Parsed times:", { startDateTimeString, endDateTimeString });
 
     // ✅ AUTH FIX — use refresh token
     const oauth2Client = new google.auth.OAuth2(
@@ -22,7 +66,7 @@ export async function POST(req: NextRequest) {
     );
 
     oauth2Client.setCredentials({
-      refresh_token: process.env.GOOGLE_REFRESH_TOKEN, // ✅ permanent refresh token
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
     });
 
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
@@ -31,16 +75,16 @@ export async function POST(req: NextRequest) {
       summary: `Quick Design Chat with ${name}`,
       description: message || "Quick design consultation",
       start: {
-        dateTime: startDateTime.toISOString(),
+        dateTime: startDateTimeString,
         timeZone: "Asia/Manila",
       },
       end: {
-        dateTime: endDateTime.toISOString(),
+        dateTime: endDateTimeString,
         timeZone: "Asia/Manila",
       },
       attendees: [
         { email },
-        { email: process.env.MY_BOOKING_EMAIL }, // ✅ your email from .env
+        { email: process.env.MY_BOOKING_EMAIL },
       ],
       conferenceData: {
         createRequest: {
@@ -50,6 +94,8 @@ export async function POST(req: NextRequest) {
       },
     };
 
+    console.log("Creating calendar event...");
+
     const response = await calendar.events.insert({
       calendarId: "primary",
       requestBody: event,
@@ -57,19 +103,23 @@ export async function POST(req: NextRequest) {
       sendUpdates: "all",
     });
 
-    if (!email || !response.data.hangoutLink) {
-  throw new Error("Missing email or meet link for confirmation email");
-}
+    console.log("Calendar event created:", response.data.id);
 
-
-    // Send confirmation email (see below)
-    await sendConfirmationEmail({
-  to: email, // fallback to empty string if null/undefined
-  name: name ?? "Guest",
-  meetLink: response.data.hangoutLink ?? "",
-  startDateTime: startDateTime.toISOString(), // convert Date → string
-});
-
+    // ✅ Try to send email, but don't fail the whole request if it errors
+    if (email && response.data.hangoutLink) {
+      try {
+        await sendConfirmationEmail({
+          to: email,
+          name: name ?? "Guest",
+          meetLink: response.data.hangoutLink ?? "",
+          startDateTime: startDate.toISOString(),
+        });
+        console.log("Confirmation email sent successfully");
+      } catch (emailError) {
+        console.error("Failed to send confirmation email (non-fatal):", emailError);
+        // Calendar event was created, so we continue anyway
+      }
+    }
 
     return NextResponse.json({
       success: true,
@@ -78,15 +128,21 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating calendar event:", error);
+    
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    
     return NextResponse.json(
-      { error: "Failed to create calendar event" },
+      { 
+        error: "Failed to create calendar event",
+        details: error instanceof Error ? error.message : "Unknown error"
+      },
       { status: 500 }
     );
   }
 }
-
-
-import nodemailer from "nodemailer";
 
 async function sendConfirmationEmail({
   to,
@@ -99,12 +155,11 @@ async function sendConfirmationEmail({
   meetLink: string;
   startDateTime: string;
 }) {
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: process.env.MY_BOOKING_EMAIL,
-      pass: process.env.GOOGLE_APP_PASSWORD, // or your email app password
+      pass: process.env.GOOGLE_APP_PASSWORD,
     },
   });
 
@@ -130,4 +185,3 @@ async function sendConfirmationEmail({
 
   await transporter.sendMail(mailOptions);
 }
-
