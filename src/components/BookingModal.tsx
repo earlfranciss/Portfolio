@@ -86,7 +86,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [duration, setDuration] = useState('15m');
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 9)); // October 2025
+  const [currentMonth, setCurrentMonth] = useState(new Date()); 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
