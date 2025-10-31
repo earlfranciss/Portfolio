@@ -93,6 +93,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [view, setView] = useState('calendar');
   const [busyTimes, setBusyTimes] = useState<BusyTime[]>([]);
   const [loadingAvailability, setLoadingAvailability] = useState(false);
+  const [monthBusyTimes, setMonthBusyTimes] = useState<{ [key: string]: BusyTime[] }>({}); // ✅ Store busy times for all days
   const [statusModal, setStatusModal] = useState<{
     isOpen: boolean;
     type: 'success' | 'error';
@@ -127,6 +128,19 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     currentMonth.getFullYear() === today.getFullYear() && 
     currentMonth.getMonth() === today.getMonth();
 
+  // ✅ Check if we can go to previous month (don't allow going to past months)
+  const canGoToPreviousMonth = () => {
+    const prevMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
+    const todayMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    return prevMonth >= todayMonth;
+  };
+
+  // ✅ Check if a day is Sunday (unavailable)
+  const isSunday = (day: number): boolean => {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    return date.getDay() === 0; // 0 = Sunday
+  };
+
   // ✅ Get the day of week for selected date
   const getSelectedDayOfWeek = (): string => {
     if (!selectedDate) return '';
@@ -140,15 +154,173 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     return dayNamesShort[date.getDay()];
   };
 
-  // ✅ Check availability when a date is selected
-  useEffect(() => {
-    if (selectedDate && view === 'time') {
-      checkAvailability();
-    }
-  }, [selectedDate, view, duration]); // Added duration as dependency
+  // ✅ Check if a date is in the past
+  const isDateInPast = (day: number): boolean => {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return date < todayStart;
+  };
 
-  // ✅ NOW we can do early return AFTER all hooks
-  if (!isOpen) return null;
+  // ✅ Check if a time is in the past for a specific date
+  const isTimeInPastForDate = (timeSlot: string, day: number): boolean => {
+    const isToday = isCurrentMonthAndYear && day === today.getDate();
+    if (!isToday) return false;
+
+    const timeMatch = timeSlot.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
+    if (!timeMatch) return false;
+
+    const [_, hours, minutes, period] = timeMatch;
+    let hour = parseInt(hours);
+    const minute = parseInt(minutes);
+
+    if (period.toLowerCase() === "pm" && hour !== 12) {
+      hour += 12;
+    } else if (period.toLowerCase() === "am" && hour === 12) {
+      hour = 0;
+    }
+
+    const slotTime = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      day,
+      hour,
+      minute
+    );
+
+    return slotTime < new Date();
+  };
+
+  // ✅ Check if ALL time slots are unavailable for a given day
+  const areAllTimeSlotsUnavailable = (day: number): boolean => {
+    if (isDateInPast(day) || isSunday(day)) return true;
+
+    const dateString = `${currentMonth.getFullYear()}-${(currentMonth.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+    
+    const dayBusyTimes = monthBusyTimes[dateString] || [];
+
+    // Check each time slot
+    for (const timeSlot of timeSlots) {
+      // Skip if time is in the past
+      if (isTimeInPastForDate(timeSlot, day)) continue;
+
+      // Parse the time slot
+      const timeMatch = timeSlot.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
+      if (!timeMatch) continue;
+
+      const [_, hours, minutes, period] = timeMatch;
+      let hour = parseInt(hours);
+      const minute = parseInt(minutes);
+
+      if (period.toLowerCase() === "pm" && hour !== 12) {
+        hour += 12;
+      } else if (period.toLowerCase() === "am" && hour === 12) {
+        hour = 0;
+      }
+
+      const durationMinutes = duration === "15m" ? 15 : 30;
+      const slotStart = new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        day,
+        hour,
+        minute
+      );
+      const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60 * 1000);
+
+      // Check if this slot is available
+      let isAvailable = true;
+      for (const busy of dayBusyTimes) {
+        if (!busy.start || !busy.end) continue;
+
+        const busyStart = new Date(busy.start);
+        const busyEnd = new Date(busy.end);
+
+        if (slotStart < busyEnd && slotEnd > busyStart) {
+          isAvailable = false;
+          break;
+        }
+      }
+
+      // If we found at least one available slot, return false
+      if (isAvailable) return false;
+    }
+
+    // All slots are unavailable
+    return true;
+  };
+
+  // ✅ Check if a time is in the past for today's date
+  const isTimeInPast = (timeSlot: string): boolean => {
+    if (!selectedDate || !isCurrentMonthAndYear || selectedDate !== today.getDate()) {
+      return false;
+    }
+
+    const timeMatch = timeSlot.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
+    if (!timeMatch) return false;
+
+    const [_, hours, minutes, period] = timeMatch;
+    let hour = parseInt(hours);
+    const minute = parseInt(minutes);
+
+    if (period.toLowerCase() === "pm" && hour !== 12) {
+      hour += 12;
+    } else if (period.toLowerCase() === "am" && hour === 12) {
+      hour = 0;
+    }
+
+    const slotTime = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      selectedDate,
+      hour,
+      minute
+    );
+
+    return slotTime < new Date();
+  };
+
+  const fetchMonthAvailability = async () => {
+    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+    const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+    try {
+      const response = await fetch("/api/calendar/check-availability", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          date: firstDay.toISOString().split('T')[0],
+          endDate: lastDay.toISOString().split('T')[0]
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok && data.busyTimes) {
+        // Group busy times by date
+        const groupedBusyTimes: { [key: string]: BusyTime[] } = {};
+        
+        for (const busy of data.busyTimes) {
+          if (!busy.start) continue;
+          const date = new Date(busy.start);
+          const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+          
+          if (!groupedBusyTimes[dateString]) {
+            groupedBusyTimes[dateString] = [];
+          }
+          groupedBusyTimes[dateString].push(busy);
+        }
+        
+        setMonthBusyTimes(groupedBusyTimes);
+      }
+    } catch (error) {
+      console.error("Error fetching month availability:", error);
+    }
+  };
 
   const checkAvailability = async () => {
     if (!selectedDate) return;
@@ -177,12 +349,30 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
       setLoadingAvailability(false);
     }
   };
+  
+  // ✅ Fetch availability for entire month when month changes
+  useEffect(() => {
+    fetchMonthAvailability();
+  }, [currentMonth, duration]);
+
+  // ✅ Check availability when a date is selected
+  useEffect(() => {
+    if (selectedDate && view === 'time') {
+      checkAvailability();
+    }
+  }, [selectedDate, view, duration]);
+
+  // ✅ NOW we can do early return AFTER all hooks
+  if (!isOpen) return null;
+
+  
 
   // ✅ Check if a time slot is available
   const isTimeSlotAvailable = (timeSlot: string): boolean => {
+    if (isTimeInPast(timeSlot)) return false;
+
     if (!selectedDate || busyTimes.length === 0) return true;
 
-    // Parse the time slot
     const timeMatch = timeSlot.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
     if (!timeMatch) return true;
 
@@ -206,29 +396,29 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     );
     const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60 * 1000);
 
-    // Check if this slot overlaps with any busy time
     for (const busy of busyTimes) {
       if (!busy.start || !busy.end) continue;
 
       const busyStart = new Date(busy.start);
       const busyEnd = new Date(busy.end);
 
-      // Check for overlap
       if (slotStart < busyEnd && slotEnd > busyStart) {
-        return false; // Slot is busy
+        return false;
       }
     }
 
-    return true; // Slot is available
+    return true;
   };
 
   const handleDateClick = (day: number) => {
+    if (isDateInPast(day) || isSunday(day) || areAllTimeSlotsUnavailable(day)) return;
+    
     setSelectedDate(day);
     setView('time');
   };
 
   const handleTimeClick = (time: string) => {
-    if (!isTimeSlotAvailable(time)) return; // Don't allow booking if slot is busy
+    if (!isTimeSlotAvailable(time)) return;
     setSelectedTime(time);
     setView('confirm');
   };
@@ -291,7 +481,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   };
 
   const goToPreviousMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+    if (canGoToPreviousMonth()) {
+      setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+    }
   };
 
   const goToNextMonth = () => {
@@ -306,19 +498,23 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     for (let i = 0; i < rows * 7; i++) {
       const day = i - firstDayOfMonth + 1;
       const isCurrentMonth = day > 0 && day <= daysInMonth;
-      // ✅ Check if this day is TODAY dynamically
       const isToday = isCurrentMonthAndYear && day === today.getDate();
+      const isPast = isDateInPast(day);
+      const isSundayDate = isSunday(day);
+      const allSlotsUnavailable = areAllTimeSlotsUnavailable(day); // ✅ Check if all slots are unavailable
 
       days.push(
         <button
           key={i}
-          onClick={() => isCurrentMonth && handleDateClick(day)}
-          disabled={!isCurrentMonth}
+          onClick={() => isCurrentMonth && !isPast && !isSundayDate && !allSlotsUnavailable && handleDateClick(day)}
+          disabled={!isCurrentMonth || isPast || isSundayDate || allSlotsUnavailable}
           className={`
             h-12 rounded-lg text-sm transition-all
             ${!isCurrentMonth ? 'invisible' : ''}
-            ${isToday ? 'bg-gray-900 text-white font-bold' : 'text-gray-700 hover:bg-gray-100'}
-            ${selectedDate === day ? 'ring-2 ring-blue-500' : ''}
+            ${isPast || isSundayDate || allSlotsUnavailable ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''} 
+            ${isToday && !isPast && !isSundayDate && !allSlotsUnavailable ? 'bg-gray-900 text-white font-bold' : ''}
+            ${!isPast && !isToday && !isSundayDate && !allSlotsUnavailable ? 'text-gray-700 hover:bg-gray-100' : ''}
+            ${selectedDate === day && !isPast && !isSundayDate && !allSlotsUnavailable ? 'ring-2 ring-blue-500' : ''}
           `}
         >
           {isCurrentMonth && day}
@@ -357,7 +553,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               I'm all ears!
             </p>
             </div>
-
 
             <div className="pt-4 border-t border-gray-300 mt-8">
               <p className="text-xs text-gray-600">Prefer async? Shoot me an email at</p>
@@ -427,13 +622,18 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 <div className="flex gap-2">
                   <button
                     onClick={goToPreviousMonth}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition"
+                    disabled={!canGoToPreviousMonth()}
+                    className={`p-2 rounded-lg transition ${
+                      canGoToPreviousMonth()
+                        ? 'text-gray-600 hover:bg-gray-100'
+                        : 'text-gray-300 cursor-not-allowed'
+                    }`}
                   >
                     ←
                   </button>
                   <button
                     onClick={goToNextMonth}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition"
+                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
                   >
                     →
                   </button>
@@ -464,7 +664,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 ← Back to calendar
               </button>
 
-              {/* ✅ Show correct day of week */}
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {getSelectedDayOfWeekShort()} {selectedDate}
               </h3>
@@ -508,7 +707,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               <h3 className="text-lg font-semibold text-gray-900 mb-1">
                 Confirm your booking
               </h3>
-              {/* ✅ Show correct day of week in confirmation */}
               <p className="text-sm text-gray-600 mb-2">
                 {getSelectedDayOfWeek()}, {monthNames[currentMonth.getMonth()]} {selectedDate}, {currentMonth.getFullYear()} at {selectedTime}
               </p>

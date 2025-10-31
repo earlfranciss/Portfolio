@@ -113,6 +113,7 @@ export async function POST(req: NextRequest) {
           name: name ?? "Guest",
           meetLink: response.data.hangoutLink ?? "",
           startDateTime: startDate.toISOString(),
+          message: message || "", // ✅ Pass the message
         });
         console.log("Confirmation email sent successfully");
       } catch (emailError) {
@@ -149,11 +150,13 @@ async function sendConfirmationEmail({
   name,
   meetLink,
   startDateTime,
+  message, // ✅ Add message parameter
 }: {
   to: string;
   name: string;
   meetLink: string;
   startDateTime: string;
+  message: string; // ✅ Add message parameter
 }) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -177,6 +180,7 @@ async function sendConfirmationEmail({
       <p>Your meeting has been successfully booked!</p>
       <p><strong>Date:</strong> ${formattedDate}</p>
       <p><strong>Google Meet Link:</strong> <a href="${meetLink}">${meetLink}</a></p>
+      ${message ? `<br/><p><strong>Your message:</strong></p><p style="background-color: #f3f4f6; padding: 12px; border-radius: 8px; font-style: italic;">${message}</p>` : ''}
       <br/>
       <p>Looking forward to chatting with you!</p>
       <p>- Earl Francis Ong</p>

@@ -1,10 +1,11 @@
+// src/app/api/calendar/check-availability/route.ts
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { date } = body;
+    const { date, endDate } = body; // ✅ Support endDate for month queries
 
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
@@ -20,7 +21,8 @@ export async function POST(req: NextRequest) {
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
-    const endOfDay = new Date(date);
+    // ✅ Use endDate if provided, otherwise use same day
+    const endOfDay = endDate ? new Date(endDate) : new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
     const response = await calendar.events.list({
