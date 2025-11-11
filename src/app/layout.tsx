@@ -17,24 +17,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <Header />
-        <div className="grid grid-cols-5 min-h-screen">
-          <div></div>
-          <main className="col-span-3 px-6 py-6 pt-16">
-            {children}
-            <Footer />
-          </main>
-          <div></div>
+
+        <div className="min-h-screen flex justify-center px-4 sm:px-6 lg:px-8 pt-16 overflow-x-hidden">
+
+          {/* Main content wrapper */}
+          <main className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto overflow-x-hidden">
+  {children}
+  <Footer />
+</main>
+
         </div>
       </body>
     </html>
   );
 }
+
