@@ -527,255 +527,203 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex">
-        {/* Left Panel */}
-        <div className="w-2/5 bg-gray-50 p-8 border-r border-gray-200">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-              EF
-            </div>
-            <div className="text-sm text-gray-600">Earl Francis Ong</div>
+  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-auto flex flex-col md:flex-row">
+    
+    {/* Left Panel */}
+    <div className="w-full md:w-2/5 bg-gray-50 p-8 sm:p-6 md:p-8 border-b md:border-b-0 md:border-r border-gray-200 flex-shrink-0">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+          EF
+        </div>
+        <div className="text-sm text-gray-600">Earl Francis Ong</div>
+         <button
+        type="button"
+        onClick={onClose}
+        className="absolute flex sm:hidden right-8 text-gray-400 hover:text-gray-600 transition"
+        aria-label="Close modal"
+      >
+        <X size={24} />
+      </button>
+      </div>
+
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
+        Hello again! 👋
+      </h2>
+
+      <div className="space-y-2 text-sm text-gray-700">
+        <p>
+          Looking to collaborate? I'm a software engineer passionate about 
+          creating <span className="italic font-semibold">efficient solutions</span> and <span className="italic font-semibold">exploring new technologies</span>.
+        </p>
+        <p>Have a project in mind or just want to talk code? I'm all ears!</p>
+      </div>
+
+      <div className="pt-4 border-t border-gray-300 mt-4 text-xs sm:text-sm">
+        <p className="mb-1">Prefer async? Shoot me an email at</p>
+        <a href="mailto:earlfrancisong@gmail.com" className="text-blue-600 hover:underline text-xs sm:text-sm">
+          earlfrancisong@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* Right Panel */}
+    <div className="w-full md:w-3/5 p-8  relative flex flex-col">
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute hidden sm:flex top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+        aria-label="Close modal"
+      >
+        <X size={24} />
+      </button>
+
+      {/* Google Meet + Time Selection */}
+      <div className="flex flex-row justify-between items-start sm:items-center pt-4 gap-4 sm:gap-2">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs text-gray-600">
+            <Video size={16} className="text-blue-600" /> <span>Google Meet</span>
           </div>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Hello again! 👋
-          </h2>
-
-          <div className="">
-            <div className='space-y-4 text-sm text-gray-700 pb-4'>
-            <p>
-              Looking to collaborate? I'm a software engineer passionate about
-              creating <span className="italic font-semibold">efficient solutions</span> and <span className="italic font-semibold">exploring new technologies</span>.
-            </p>
-
-            <p>
-              Have a project in mind or just want to talk code?
-              I'm all ears!
-            </p>
-            </div>
-
-            <div className="pt-4 border-t border-gray-300 mt-8">
-              <p className="text-xs text-gray-600">Prefer async? Shoot me an email at</p>
-              <a href="mailto:earlfrancisong@gmail.com" className="text-normal text-blue-600 hover:underline">
-                earlfrancisong@gmail.com
-              </a>
-            </div>
+          <div className="flex items-center gap-2 text-xs text-gray-600">
+            <Globe size={16} /> <span>Asia/Manila</span>
           </div>
         </div>
 
-        {/* Right Panel */}
-        <div className="w-3/5 p-8 relative flex flex-col ">
+        <div className="flex items-center gap-2">
+          <Clock size={18} className="text-gray-400" />
           <button
-            type="button"
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
-            aria-label="Close modal"
+            onClick={() => setDuration('15m')}
+            className={`px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition ${
+              duration === '15m' ? 'bg-gray-200 text-gray-900' : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
+            }`}
           >
-            <X size={24} />
+            15m
           </button>
-          <div className='flex justify-between pt-4 items-center'>
-            <div>
-              <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-                <Video size={18} className="text-blue-600" />
-                <span>Google Meet</span>
-              </div>
+          <button
+            onClick={() => setDuration('30m')}
+            className={`px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition ${
+              duration === '30m' ? 'bg-gray-200 text-gray-900' : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
+            }`}
+          >
+            30m
+          </button>
+        </div>
+      </div>
 
-              <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-                <Globe size={18} />
-                <span>Asia/Manila</span>
-              </div>
-            </div>
-
-            {/* Duration Selection */}
-            <div className="flex items-center gap-2 mb-6">
-              <Clock size={20} className="text-gray-400" />
-              <button
-                onClick={() => setDuration('15m')}
-                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
-                  duration === '15m'
-                    ? 'bg-gray-200 text-gray-900'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-                }`}
-              >
-                15m
-              </button>
-              <button
-                onClick={() => setDuration('30m')}
-                className={`px-4 py-2 rounded-lg text-xs font-medium transition ${
-                  duration === '30m'
-                    ? 'bg-gray-200 text-gray-900'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-150'
-                }`}
-              >
-                30m
-              </button>
-            </div>
-          </div>
-
-          {/* Calendar View */}
-          {view === 'calendar' && (
-            <div>
-              <div className="flex items-center justify-between py-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-                </h3>
-                <div className="flex gap-2">
-                  <button
-                    onClick={goToPreviousMonth}
-                    disabled={!canGoToPreviousMonth()}
-                    className={`p-2 rounded-lg transition ${
-                      canGoToPreviousMonth()
-                        ? 'text-gray-600 hover:bg-gray-100'
-                        : 'text-gray-300 cursor-not-allowed'
-                    }`}
-                  >
-                    ←
-                  </button>
-                  <button
-                    onClick={goToNextMonth}
-                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-7 gap-2 mb-2">
-                {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => (
-                  <div key={day} className="text-xs font-semibold text-gray-500 text-center">
-                    {day}
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-7 gap-2">
-                {renderCalendar()}
-              </div>
-            </div>
-          )}
-
-          {/* Time Selection View */}
-          {view === 'time' && (
-            <div>
-              <button
-                onClick={() => setView('calendar')}
-                className="text-sm text-blue-600 hover:underline mb-2 items-start"
-              >
-                ← Back to calendar
-              </button>
-
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {getSelectedDayOfWeekShort()} {selectedDate}
+      {/* Calendar / Time / Confirmation Views */}
+      <div className="mt-4 flex-1 overflow-auto">
+        {view === 'calendar' && (
+          <div className="space-y-3">
+            {/* Month Navigation */}
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-900 text-sm sm:text-base">
+                {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
               </h3>
-
-              {loadingAvailability && (
-                <p className="text-sm text-gray-500 mb-2">Checking availability...</p>
-              )}
-
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {timeSlots.map(time => {
-                  const available = isTimeSlotAvailable(time);
-                  return (
-                    <button
-                      key={time}
-                      onClick={() => handleTimeClick(time)}
-                      disabled={!available}
-                      className={`w-full py-2 px-4 text-sm border-2 rounded-lg transition text-center font-medium ${
-                        available
-                          ? 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700'
-                          : 'border-gray-100 bg-gray-100 text-gray-400 cursor-not-allowed'
-                      }`}
-                    >
-                      {time}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Confirmation View */}
-          {view === 'confirm' && (
-            <div className="overflow-y-auto flex-1">
-              <button
-                onClick={() => setView('time')}
-                className="text-sm text-blue-600 hover:underline mb-2"
-              >
-                ← Back to time selection
-              </button>
-
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                Confirm your booking
-              </h3>
-              <p className="text-sm text-gray-600 mb-2">
-                {getSelectedDayOfWeek()}, {monthNames[currentMonth.getMonth()]} {selectedDate}, {currentMonth.getFullYear()} at {selectedTime}
-              </p>
-
-              <div className="space-y-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full text-sm text-black px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full text-sm text-black  px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    What would you like to discuss? (optional)
-                  </label>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="w-full text-sm text-black  px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
-                    rows={3}
-                    placeholder="Tell me a bit about your project..."
-                  />
-                </div>
-
+              <div className="flex gap-2">
                 <button
-                  onClick={handleBooking}
-                  disabled={!name || !email}
-                  className="w-full text-sm  bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                  onClick={goToPreviousMonth}
+                  disabled={!canGoToPreviousMonth()}
+                  className={`p-2 rounded-lg transition text-gray-600 hover:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed`}
                 >
-                  Confirm Booking
+                  ←
+                </button>
+                <button
+                  onClick={goToNextMonth}
+                  className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
+                >
+                  →
                 </button>
               </div>
             </div>
-          )}
 
-          <StatusModal
-            isOpen={statusModal.isOpen}
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            meetLink={statusModal.meetLink}
-            onClose={() => {
-              setStatusModal({ ...statusModal, isOpen: false });
-              if (statusModal.type === "success") onClose();
-            }}
-          />
-        </div>
+            {/* Weekday Names */}
+            <div className="grid grid-cols-7 gap-1 text-[10px] sm:text-xs font-semibold text-gray-500 text-center">
+              {['SUN','MON','TUE','WED','THU','FRI','SAT'].map(d => <div key={d}>{d}</div>)}
+            </div>
+
+            {/* Days */}
+            <div className="grid grid-cols-7 gap-1 p-2">
+              {renderCalendar()}
+            </div>
+          </div>
+        )}
+
+        {/* Time Selection */}
+        {view === 'time' && (
+          <div>
+            <button
+              onClick={() => setView('calendar')}
+              className="text-xs sm:text-sm text-blue-600 hover:underline mb-2"
+            >
+              ← Back to calendar
+            </button>
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">
+              {getSelectedDayOfWeekShort()} {selectedDate}
+            </h3>
+            {loadingAvailability && <p className="text-xs text-gray-500 mb-2">Checking availability...</p>}
+            <div className="space-y-2 max-h-72 sm:max-h-96 overflow-y-auto">
+              {timeSlots.map(time => (
+                <button
+                  key={time}
+                  onClick={() => handleTimeClick(time)}
+                  disabled={!isTimeSlotAvailable(time)}
+                  className={`w-full py-2 px-3 sm:px-4 text-xs sm:text-sm border-2 rounded-lg transition text-center font-medium ${
+                    isTimeSlotAvailable(time)
+                      ? 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700'
+                      : 'border-gray-100 bg-gray-100 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation */}
+        {view === 'confirm' && (
+          <div className="space-y-3">
+            <button
+              onClick={() => setView('time')}
+              className="text-xs sm:text-sm text-blue-600 hover:underline"
+            >
+              ← Back to time selection
+            </button>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Confirm your booking</h3>
+            <p className="text-xs sm:text-sm text-gray-600">
+              {getSelectedDayOfWeek()}, {monthNames[currentMonth.getMonth()]} {selectedDate}, {currentMonth.getFullYear()} at {selectedTime}
+            </p>
+            {/* Form Inputs */}
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-gray-700 mb-1"> Name * </label>
+              <input className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+              <label className="block text-xs font-medium text-gray-700 mb-1"> Email * </label>
+              <input className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+              <label className="block text-xs font-medium text-gray-700 mb-1"> What would you like to discuss? (optional) </label>
+              <textarea className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none" rows={3} placeholder="Message" value={message} onChange={e => setMessage(e.target.value)} />
+              <button onClick={handleBooking} disabled={!name || !email} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm sm:text-base font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed">
+                Confirm Booking
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Status Modal */}
+      <StatusModal
+        isOpen={statusModal.isOpen}
+        type={statusModal.type}
+        title={statusModal.title}
+        message={statusModal.message}
+        meetLink={statusModal.meetLink}
+        onClose={() => {
+          setStatusModal({ ...statusModal, isOpen: false });
+          if (statusModal.type === "success") onClose();
+        }}
+      />
     </div>
+  </div>
+</div>
+
   );
 };
 
