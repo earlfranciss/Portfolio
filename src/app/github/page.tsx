@@ -49,7 +49,7 @@ export default function Github() {
 
       {/* Pinned Repositories */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-center">Pinned Repositories</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-center">Pinned Repositories</h3>
 
         {loading ? (
           <p className="text-center text-gray-400">Loading repositories...</p>

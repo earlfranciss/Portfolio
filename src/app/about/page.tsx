@@ -12,7 +12,7 @@ export default function About() {
     return (
         <section id="about" className="scroll-mt-52  space-y-6 mt-24 ">
 
-            <div className="text-base sm:text-lg mt-5 sm:mt-8 text-center text-gray-400 leading-relaxed p-4 sm:p-6 md:p-8 m-4 sm:m-5 md:m-7">
+            <div className="text-base sm:text-lg mt-5 sm:mt-8 text-center text-gray-400 leading-relaxed p-2 sm:p-6 md:p-8 m-4 sm:m-5 md:m-7">
                 I'm a
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="developer"
@@ -22,7 +22,7 @@ export default function About() {
                         "/developer/img3.png",
                         "/developer/img4.png",
                     ]}
-                />{" "}</i>
+                />{"  "}</i>
                 by day and a
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="lifter"
@@ -33,10 +33,10 @@ export default function About() {
                         "/gym/img4.png",
                         "/gym/img5.png",
                     ]}
-                />{" "}</i>
+                />{"  "}</i>
                 by habit, based in
                 <span className="text-slate-200 font-normal"> Cebu, Philippines</span>.
-                Currently
+                Currently 
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="building modern software experiences"
                     images={[
@@ -61,7 +61,7 @@ export default function About() {
                     src="https://skillicons.dev/icons?i=dotnet,react,angular,tailwind,py,flask,vue,ts,js,figma,mongodb,azure,docker,git,github"
                     className="items-center mt-8" /> */}
                 <TechIcons />
-                <div className="flex justify-center items-center gap-6 pt-8">
+                <div className="flex justify-center items-center gap-8 sm:gap-6 pt-8">
 
                     <div
                         onClick={() => setIsModalOpen(true)}

@@ -24,7 +24,10 @@ export default function ExperienceCard({ title, description, date, link }: Exper
           className="flex items-center gap-2 text-normal font-semibold text-slate-200"
           >
             {title}  
-            <SquareArrowOutUpRight  size={12}/>
+            <SquareArrowOutUpRight 
+  className="w-5 h-5 sm:w-4 sm:h-4 md:w-3 md:h-3"
+/>
+
         </Link>
         <p className="text-gray-400 mt-2 leading-relaxed text-sm">{description}</p>
       </div>
