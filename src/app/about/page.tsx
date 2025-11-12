@@ -72,7 +72,7 @@ export default function About() {
                     </div>
                     {/* Availability status */}
                     <div className="flex items-center gap-2">
-<div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse-glow" />
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse-glow" />
                         <h4 className="text-xs text-gray-300 font-medium">Available for projects</h4>
                     </div>
                 </div>

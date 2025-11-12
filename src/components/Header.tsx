@@ -27,7 +27,7 @@ export default function Header() {
       </div>
 
       {/* Social / Resume (desktop only) */}
-      <div className="hidden sm:flexitems-center gap-4">
+      <div className="hidden sm:flex items-center gap-4">
         <Link
           href="https://www.linkedin.com/in/earl-francis-o-3370a3205"
           target="_blank"
