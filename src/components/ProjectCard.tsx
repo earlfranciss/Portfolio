@@ -43,7 +43,7 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
           <div className="relative flex flex-col sm:flex-row justify-between items-start gap-2 mt-1">
             {/* Title */}
             <div className="flex flex-col gap-2 w-full sm:w-auto">
-              <h3 className="text-lg font-semibold">{project.title}</h3>
+              <h3 className="text-lg font-medium">{project.title}</h3>
             </div>
 
             {/* Arrow */}

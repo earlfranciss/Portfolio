@@ -50,7 +50,7 @@ export default function TechIcons() {
          <img
   src={`https://skillicons.dev/icons?i=${tech.name}`}
   alt={tech.name}
-  className="cursor-pointer w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
+  className="cursor-pointer w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
 />
 
           </a>

@@ -7,7 +7,7 @@ export default function Experience() {
       {/* Gradient top border */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
-      <h2 className="text-2xl font-bold text-center">Experience</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold sm:font-bold text-center">Experience</h2>
       <div className="flex flex-col ">
         {ExperienceData.map((exp) => (
           <ExperienceCard key={exp.id} {...exp} />

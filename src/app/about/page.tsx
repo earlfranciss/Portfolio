@@ -12,7 +12,7 @@ export default function About() {
     return (
         <section id="about" className="scroll-mt-52  space-y-6 mt-24 ">
 
-            <div className="text-sm sm:text-lg mt-5 sm:mt-8 text-center text-gray-400 leading-relaxed p-4 sm:p-6 md:p-8 m-4 sm:m-5 md:m-7">
+            <div className="text-base sm:text-lg mt-5 sm:mt-8 text-center text-gray-400 leading-relaxed p-4 sm:p-6 md:p-8 m-4 sm:m-5 md:m-7">
                 I'm a
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="developer"

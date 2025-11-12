@@ -42,7 +42,7 @@ export default function Github() {
         href="https://github.com/earlfranciss"
         target="_blank"
         rel="noopener noreferrer"
-        className="block text-2xl font-bold text-center hover:text-gray-400 transition"
+        className="block text-xl sm:text-2xl font-semibold sm:font-bold text-center hover:text-gray-400 transition"
       >
         GitHub
       </Link>
