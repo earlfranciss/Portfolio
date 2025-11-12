@@ -40,37 +40,44 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
 
         {/* Content */}
         <div className="relative z-10">
-          <div className="flex gap-2 mt-1">
-            <h3 className="text-lg font-semibold pr-6">{project.title}</h3>
-            <div className="flex justify-between items-center w-full mt-1">
-              {/* Left side: Tech stack */}
-              <div className="flex items-center gap-2">
-                {project.techStack.map((tech, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 rounded border border-gray-700/50 px-2 py-1"
-                  >
-                    <p className="text-xs text-gray-400">{tech.name}</p>
-                    <img
-                      src={tech.icon}
-                      alt={tech.name}
-                      title={tech.name}
-                      className="w-4 h-4"
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* Right side: Arrow icon */}
-              <MoveRight className="text-gray-200 flex-shrink-0" />
+          <div className="relative flex flex-col sm:flex-row justify-between items-start gap-2 mt-1">
+            {/* Title */}
+            <div className="flex flex-col gap-2 w-full sm:w-auto">
+              <h3 className="text-lg font-semibold">{project.title}</h3>
+            </div>
+
+            {/* Arrow */}
+            <div className="absolute top-0 right-0 sm:static sm:ml-4">
+              <MoveRight className="text-gray-200" />
             </div>
           </div>
 
-          <p className="text-gray-500 py-2 text-base">{project.description}</p>
 
+
+
+          <p className="text-gray-500 py-2 text-base">{project.description}</p>
+          {/* Tech Stack */}
+          <div className="flex flex-wrap sm:flex-row items-center gap-2 ">
+            {project.techStack.map((tech, index) => (
+              <div
+                key={index}
+                className="relative flex items-center gap-2 rounded border border-gray-700/50 px-2 py-1 hover:bg-gray-700 transition-colors duration-200"
+              >
+                <p className="text-xs text-gray-400">{tech.name}</p>
+                <img
+                  src={tech.icon}
+                  alt={tech.name}
+                  title={tech.name}
+                  className="w-3 h-3 sm:w-4 sm:h-4"
+                />
+              </div>
+
+            ))}
+          </div>
           <div className="mt-3">
             {/* ✅ Pass isHovered prop to ImageSlider */}
-            <ImageSlider 
-              images={project.images} 
+            <ImageSlider
+              images={project.images}
               title={project.title}
               isHovered={isHovered}
             />

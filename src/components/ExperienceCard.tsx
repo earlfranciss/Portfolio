@@ -11,8 +11,8 @@ export type Experience = {
 
 export default function ExperienceCard({ title, description, date, link }: Experience) {
   return (
-    <div className="flex rounded-lg p-4 transition">
-      <p className="flex-shrink-0 pr-5 pt-1 w-44 text-sm text-gray-500 text-end">
+    <div className="flex flex-col  sm:flex-row  rounded-lg p-4 transition">
+      <p className="flex-shrink-0 pr-5 pt-1 w-44 text-sm text-gray-500 text-start sm:text-end text-xs sm:text-sm">
         { date }
       </p>
 

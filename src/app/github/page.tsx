@@ -58,11 +58,15 @@ export default function Github() {
             No pinned repositories found.
           </p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-            {repos.map((repo) => (
-              <RepoCard key={repo.name} repo={repo} />
-            ))}
-          </div>
+         <div className="flex flex-wrap -mx-2">
+  {repos.map((repo) => (
+    <div key={repo.name} className="w-full md:w-1/2 px-2 mb-4">
+      <RepoCard repo={repo} />
+    </div>
+  ))}
+</div>
+
+
         )}
       </div>
 

@@ -47,13 +47,12 @@ export default function TechIcons() {
             onMouseLeave={() => setHoverIndex(null)}
             className={`transition-transform duration-400 ${scale} ${opacity}`}
           >
-            <img
-              src={`https://skillicons.dev/icons?i=${tech.name}`}
-              alt={tech.name}
-              width={36}
-              height={36}
-              className="cursor-pointer "
-            />
+         <img
+  src={`https://skillicons.dev/icons?i=${tech.name}`}
+  alt={tech.name}
+  className="cursor-pointer w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
+/>
+
           </a>
         );
       })}

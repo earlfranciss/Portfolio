@@ -10,9 +10,9 @@ export default function About() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <section id="about" className="scroll-mt-52  space-y-6">
+        <section id="about" className="scroll-mt-52  space-y-6 mt-24 ">
 
-            <div className=" text-lg mt-20 m-9 p-8 text-center text-gray-400 leading-relaxed">
+            <div className="text-sm sm:text-lg mt-5 sm:mt-8 text-center text-gray-400 leading-relaxed p-4 sm:p-6 md:p-8 m-4 sm:m-5 md:m-7">
                 I'm a
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="developer"
@@ -35,7 +35,7 @@ export default function About() {
                     ]}
                 />{" "}</i>
                 by habit, based in
-                <span className="text-slate-200 font-normal"> Cebu, Philippines</span>. <br />
+                <span className="text-slate-200 font-normal"> Cebu, Philippines</span>.
                 Currently
                 <i className="text-slate-200 font-semibold">{" "}<HoverSlideshow
                     label="building modern software experiences"
@@ -65,14 +65,14 @@ export default function About() {
 
                     <div
                         onClick={() => setIsModalOpen(true)}
-                        className="flex items-center gap-2 rounded border-2 border-gray-400/20 text-sm px-4 py-2 cursor-pointer bg-gray-700/40 hover:bg-blue-600/40 hover:border-blue-400 text-gray-300 hover:text-gray-100 hover:scale-105 transition-all duration-300 font-semibold"
+                        className="flex items-center gap-2 rounded border-2 border-gray-400/20 text-sm sm:text-xs px-4 py-2 cursor-pointer bg-gray-700/40 hover:bg-blue-600/40 hover:border-blue-400 text-gray-300 hover:text-gray-100 hover:scale-105 transition-all duration-300 font-semibold"
                     >
                         <span>Say Hello</span>
                         <span className="animate-wave inline-block">👋</span>
                     </div>
                     {/* Availability status */}
                     <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse-glow" />
+<div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse-glow" />
                         <h4 className="text-xs text-gray-300 font-medium">Available for projects</h4>
                     </div>
                 </div>
