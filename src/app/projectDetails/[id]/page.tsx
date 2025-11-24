@@ -21,9 +21,9 @@ import Zoom from 'react-medium-image-zoom';
 export default function ProjectDetailsPage() {
     const params = useParams();
     const id = params.id as string;
-    
+
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    
+
     const plugin = React.useRef(
         Autoplay({ delay: 2000, stopOnInteraction: true })
     )
@@ -51,7 +51,7 @@ export default function ProjectDetailsPage() {
                     <h1 className="text-4xl font-bold">{project.title}</h1>
 
                     {/* Project links */}
-                    <Link href={project.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-200 transition-colors">
+                    <Link href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-200 transition-colors">
                         <Github size={18} />
                     </Link>
                     <Link href={project.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-200 transition-colors">
@@ -116,12 +116,13 @@ export default function ProjectDetailsPage() {
 
             {/* Lightbox Modal */}
             {selectedImage && (
-                <div 
+                <div
                     className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
                     onClick={() => setSelectedImage(null)}
                 >
                     {/* Close button */}
                     <button
+                        aria-label="Close"
                         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
                         onClick={() => setSelectedImage(null)}
                     >
@@ -129,7 +130,7 @@ export default function ProjectDetailsPage() {
                     </button>
 
                     {/* Full size image */}
-                    
+
                     <img
                         src={selectedImage}
                         alt="Full size screenshot"

@@ -12,8 +12,8 @@ export default function Header() {
     <header className="sticky top-0 z-50 backdrop-blur-md flex justify-between items-center py-4 px-6 shadow-sm">
       {/* Logo / Name */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-black font-bold">
-          E
+        <div className="w-10 h-10 bg-gradient-to-br from-indigo-800 to-gray-900 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+          <i>E</i>
         </div>
         <div>
           <h1 className="text-base font-bold text-gray-100">Earl Francis Ong</h1>
