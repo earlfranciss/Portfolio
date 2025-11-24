@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { date, endDate } = body; // ✅ Support endDate for month queries
+    const { date, endDate } = body;
 
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
-    // ✅ Use endDate if provided, otherwise use same day
     const endOfDay = endDate ? new Date(endDate) : new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -40,10 +39,23 @@ export async function POST(req: NextRequest) {
       })) || [];
 
     return NextResponse.json({ busyTimes });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error checking availability:', error);
+    
+    // ✅ Always return NextResponse, not plain objects
+    if (error.code === 401 || error.message?.includes('invalid_grant')) {
+      return NextResponse.json(
+        { error: 'Please reconnect your Google Calendar' },
+        { status: 401 }
+      );
+    }
+    
+    // ✅ Handle other errors properly
     return NextResponse.json(
-      { error: 'Failed to check availability' },
+      { 
+        error: 'Failed to check availability',
+        message: error.message || 'Unknown error'
+      },
       { status: 500 }
     );
   }

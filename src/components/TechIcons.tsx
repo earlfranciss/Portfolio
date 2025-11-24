@@ -33,8 +33,8 @@ export default function TechIcons() {
           distance === 0
             ? "scale-115"
             : distance === 1
-            ? "scale-105"
-            : "scale-100";
+              ? "scale-105"
+              : "scale-100";
         const opacity = distance <= 2 ? "opacity-100" : "opacity-95";
 
         return (
@@ -47,11 +47,11 @@ export default function TechIcons() {
             onMouseLeave={() => setHoverIndex(null)}
             className={`transition-transform duration-400 ${scale} ${opacity}`}
           >
-         <img
-  src={`https://skillicons.dev/icons?i=${tech.name}`}
-  alt={tech.name}
-  className="cursor-pointer w-9 h-9 sm:w-10 sm:h-10 md:w-10 md:h-10"
-/>
+            <img
+              src={`https://skillicons.dev/icons?i=${tech.name}`}
+              alt={tech.name}
+              className="cursor-pointer w-9 h-9 sm:w-10 sm:h-10 md:w-10 md:h-10"
+            />
 
           </a>
         );

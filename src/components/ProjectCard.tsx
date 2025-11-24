@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Project } from "../lib/ProjectsData";
 import { MoveRight } from 'lucide-react';
+import Link from "next/link";
 import ImageSlider from "./ImageSlider";
 
 interface ProjectCardProps {
@@ -48,7 +49,9 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
 
             {/* Arrow */}
             <div className="absolute top-0 right-0 sm:static sm:ml-4">
-              <MoveRight className="text-gray-200" />
+              <Link href={`/projectDetails/${project.id}`}>
+                <MoveRight className="text-gray-200" />
+              </Link>
             </div>
           </div>
 

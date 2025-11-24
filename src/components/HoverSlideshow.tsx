@@ -34,7 +34,7 @@ export default function HoverSlideshow({ images, label }: HoverSlideshowProps) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* The word itself */}
-      <i className="text-slate-200 font-semibold">{label}</i>
+      <i className="text-slate-200 font-semibold hover:text-emerald-400">{label}</i>
 
       {/* Slideshow above the word */}
       {hovered && (
