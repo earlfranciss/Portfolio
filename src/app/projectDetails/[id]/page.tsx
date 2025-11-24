@@ -46,9 +46,9 @@ export default function ProjectDetailsPage() {
             </Link>
 
             <div className="space-y-4">
-                <div className="flex gap-3 items-center justify-center">
+                <div className="flex flex-wrap gap-3 items-center justify-center">
                     {/* Project header */}
-                    <h1 className="text-4xl font-bold">{project.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">{project.title}</h1>
 
                     {/* Project links */}
                     <Link href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-200 transition-colors">
@@ -80,9 +80,12 @@ export default function ProjectDetailsPage() {
                 </div>
             </div>
 
+                          {/* Gradient top border */}
+      <div className=" w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
+
             {/* Images gallery */}
-            <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Screenshots</h2>
+            <div className="space-y-4 ">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">Gallery</h2>
                 <Carousel
                     plugins={[plugin.current]}
                     opts={{
