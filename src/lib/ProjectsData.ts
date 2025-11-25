@@ -208,12 +208,12 @@ export const ProjectData: Project[] = [
     link: "http://20.106.176.126:4040",
     team: [
       { name: "Raquel Sanchez", role: "Project Manager" },
-      { name: "Rhea Arnado", role: "DevOps Engineer" },
       { name: "Shaundyl Alipio", role: "Lead Backend Developer" },
       { name: "Eugene Apostol", role: "Backend Developer" },
       { name: "Louell Grey Miones", role: "Backend Developer" },
       { name: "Earl Francis Ong", role: "Lead Frontend Developer" },
       { name: "James Anquillano", role: "Frontend Developer" },
+      { name: "Rhea Arnado", role: "DevOps Engineer" },
     ],
     features: [
       {
