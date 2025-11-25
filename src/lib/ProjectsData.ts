@@ -45,7 +45,7 @@ export const ProjectData: Project[] = [
     link: "https://github.com/earlfranciss/SwiftShield",
     team: [
       { name: "Miranda Lois Arriola", role: "Project Manager" },
-      { name: "Earl Francis Ong", role: "Lead Backend/AI Engineer" },
+      { name: "Earl Francis Ong", role: "Lead Backend/AI Developer" },
       { name: "Stephen Hans Amistoso", role: "Backend Developer" },
       { name: "Sheilmae Jean Furog", role: "Frontend Developer" },
       { name: "Via Gelig", role: "Frontend Developer" },
@@ -208,8 +208,8 @@ export const ProjectData: Project[] = [
     link: "http://20.106.176.126:4040",
     team: [
       { name: "Raquel Sanchez", role: "Project Manager" },
-      { name: "Shaundyl Alipio", role: "Lead Backend Developer" },
-      { name: "Eugene Apostol", role: "Backend Developer" },
+      { name: "Shaundyl Alipio", role: "Lead Backend/AI Developer" },
+      { name: "Eugene Apostol", role: "Backend/AI Developer" },
       { name: "Louell Grey Miones", role: "Backend Developer" },
       { name: "Earl Francis Ong", role: "Lead Frontend Developer" },
       { name: "James Anquillano", role: "Frontend Developer" },
