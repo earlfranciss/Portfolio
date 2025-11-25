@@ -31,7 +31,7 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.5 }}
-        className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border hover:border-gray-400/60 ${bgColor}`}
+        className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border hover:border-gray-400/60 shadow-lg shadow-white/10 hover:shadow-4xl hover:shadow-white/25 transition-shadow duration-300 ${bgColor}`}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -60,12 +60,10 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
             </div>
           </div>
 
-
-
-
           <p className="text-gray-500 py-2 text-base">{project.description}</p>
+          
           {/* Tech Stack */}
-          <div className="flex flex-wrap sm:flex-row items-center gap-2 ">
+          <div className="flex flex-wrap sm:flex-row items-center gap-2">
             {project.techStack.map((tech, index) => (
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
@@ -83,9 +81,9 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
                   className="w-3 h-3 sm:w-4 sm:h-4"
                 />
               </motion.div>
-
             ))}
           </div>
+          
           <div className="mt-3">
             {/* ✅ Pass isHovered prop to ImageSlider */}
             <ImageSlider
