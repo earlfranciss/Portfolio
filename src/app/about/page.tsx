@@ -77,7 +77,6 @@ export default function About() {
                         images={[
                             "/gym/img1.png",
                             "/gym/img2.png",
-                            "/gym/img3.png",
                             "/gym/img4.png",
                             "/gym/img5.png",
                         ]}

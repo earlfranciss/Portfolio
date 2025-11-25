@@ -118,7 +118,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
 
   const timeSlots = [
     '10:00pm', '10:15pm', '10:30pm', '10:45pm',
-    '11:00pm', '11:15pm', '11:30pm', '11:45pm'
+    '11:00pm', '11:15pm', '11:30pm'
   ];
 
   // ✅ Get today's date dynamically

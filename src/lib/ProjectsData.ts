@@ -28,6 +28,7 @@ export const ProjectData: Project[] = [
     ],
     techStack: [
       { name: "React Native", icon: "https://skillicons.dev/icons?i=react" },
+      { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
       { name: "Flask", icon: "https://skillicons.dev/icons?i=flask" },
       { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
     ],
