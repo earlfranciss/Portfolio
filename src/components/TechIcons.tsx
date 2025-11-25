@@ -1,5 +1,7 @@
 "use client";
+
 import { useState } from "react";
+import { motion } from "motion/react"
 
 const techStack = [
   { name: "dotnet", url: "https://dotnet.microsoft.com/" },
@@ -38,7 +40,15 @@ export default function TechIcons() {
         const opacity = distance <= 2 ? "opacity-100" : "opacity-95";
 
         return (
-          <a
+          <motion.a
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ 
+              duration: 0.5,
+              delay: i * 0.1, // Stagger delay: each icon waits 0.1s longer
+              ease: "easeOut"
+            }} 
             key={tech.name}
             href={tech.url}
             target="_blank"
@@ -52,8 +62,7 @@ export default function TechIcons() {
               alt={tech.name}
               className="cursor-pointer w-9 h-9 sm:w-10 sm:h-10 md:w-10 md:h-10"
             />
-
-          </a>
+          </motion.a>
         );
       })}
     </div>

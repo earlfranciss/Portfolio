@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { MoveUpRight, Menu, X } from "lucide-react";
 import BurgerMenu from "./BurgerMenu";
+import { motion } from "motion/react";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,7 +12,16 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md flex justify-between items-center py-4 px-6 shadow-sm">
       {/* Logo / Name */}
-      <div className="flex items-center gap-3">
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 20 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.1,
+          ease: "easeOut"
+        }}
+        className="flex items-center gap-3">
         <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
         </div>
@@ -19,15 +29,32 @@ export default function Header() {
           <h1 className="text-base font-bold text-gray-100">Earl Francis Ong</h1>
           <p className="text-xs font-serif italic text-gray-400">Software Engineer</p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Navbar: visible only on larger screens */}
-      <div className="hidden sm:flex">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.1,
+          ease: "easeOut"
+        }} className="hidden sm:flex">
         <BurgerMenu />
-      </div>
+      </motion.div>
 
       {/* Social / Resume (desktop only) */}
-      <div className="hidden sm:flex items-center gap-4">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.1,
+          ease: "easeOut"
+        }}
+        className="hidden sm:flex items-center gap-4">
         <Link
           href="https://www.linkedin.com/in/earl-francis-o-3370a3205"
           target="_blank"
@@ -42,10 +69,18 @@ export default function Header() {
         >
           Resume <MoveUpRight size={14} />
         </Link>
-      </div>
+      </motion.div>
 
       {/* Hamburger for mobile */}
-      <div className="sm:hidden flex items-center gap-2">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.1,
+          ease: "easeOut"
+        }} className="sm:hidden flex items-center gap-2">
         <button onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? (
             <X size={24} className="text-gray-200" />
@@ -53,11 +88,19 @@ export default function Header() {
             <Menu size={24} className="text-gray-200" />
           )}
         </button>
-      </div>
+      </motion.div>
 
       {/* Mobile dropdown menu */}
       {menuOpen && (
-        <div
+        <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.1,
+          ease: "easeOut"
+        }}
           className="
             sm:hidden absolute top-full left-0 w-full
             backdrop-blur-md bg-zinc-900
@@ -83,7 +126,7 @@ export default function Header() {
           >
             Resume <MoveUpRight size={14} />
           </Link>
-        </div>
+        </motion.div>
       )}
     </header>
   );

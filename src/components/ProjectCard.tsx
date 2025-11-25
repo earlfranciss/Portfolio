@@ -5,6 +5,7 @@ import { Project } from "../lib/ProjectsData";
 import { MoveRight } from 'lucide-react';
 import Link from "next/link";
 import ImageSlider from "./ImageSlider";
+import { motion } from "motion/react"
 
 interface ProjectCardProps {
   project: Project;
@@ -25,7 +26,11 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
 
   return (
     <div className="p-2">
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5 }}
         className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border hover:border-gray-400/60 ${bgColor}`}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
@@ -62,7 +67,11 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
           {/* Tech Stack */}
           <div className="flex flex-wrap sm:flex-row items-center gap-2 ">
             {project.techStack.map((tech, index) => (
-              <div
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
                 key={index}
                 className="relative flex items-center gap-2 rounded border border-gray-700/50 px-2 py-1 hover:bg-gray-700 transition-colors duration-200"
               >
@@ -73,7 +82,7 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
                   title={tech.name}
                   className="w-3 h-3 sm:w-4 sm:h-4"
                 />
-              </div>
+              </motion.div>
 
             ))}
           </div>
@@ -86,7 +95,7 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

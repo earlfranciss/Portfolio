@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import GitHubCalendar from "react-github-calendar";
+import { motion } from "motion/react";
 
 interface Repo {
   name: string;
@@ -58,13 +59,21 @@ export default function Github() {
             No pinned repositories found.
           </p>
         ) : (
-         <div className="flex flex-wrap -mx-2">
-  {repos.map((repo) => (
-    <div key={repo.name} className="w-full md:w-1/2 px-2 mb-4">
-      <RepoCard repo={repo} />
-    </div>
-  ))}
-</div>
+          <div className="flex flex-wrap -mx-2">
+            {repos.map((repo, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{
+                  duration: 0.5,
+                  delay: i * 0.1, 
+                  ease: "easeOut"
+                }} key={repo.name} className="w-full md:w-1/2 px-2 mb-4">
+                <RepoCard repo={repo} />
+              </motion.div>
+            ))}
+          </div>
 
 
         )}

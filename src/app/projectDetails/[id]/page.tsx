@@ -15,8 +15,7 @@ import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { MoveLeft, Github, Link2, X } from "lucide-react";
 import { useState } from "react";
-import Zoom from 'react-medium-image-zoom';
-
+import { motion } from "motion/react"
 
 export default function ProjectDetailsPage() {
     const params = useParams();
@@ -35,7 +34,15 @@ export default function ProjectDetailsPage() {
     }
 
     return (
-        <div className="py-8 space-y-6">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ 
+              duration: 0.5,
+              delay: 0.1, // Stagger delay: each icon waits 0.1s longer
+              ease: "easeOut"
+            }} className="py-8 space-y-6">
             {/* Back button */}
             <Link
                 href="/"
@@ -80,8 +87,8 @@ export default function ProjectDetailsPage() {
                 </div>
             </div>
 
-                          {/* Gradient top border */}
-      <div className=" w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
+            {/* Gradient top border */}
+            <div className=" w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
             {/* Images gallery */}
             <div className="space-y-4 ">
@@ -142,6 +149,6 @@ export default function ProjectDetailsPage() {
                     />
                 </div>
             )}
-        </div>
+        </motion.div>
     );
 }

@@ -1,5 +1,8 @@
+"use client"
+
 import ExperienceCard from "@/components/ExperienceCard";
 import { ExperienceData } from "../../lib/ExperienceData"
+import { motion } from "motion/react";
 
 export default function Experience() {
   return (
@@ -7,7 +10,10 @@ export default function Experience() {
       {/* Gradient top border */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
-      <h2 className="text-xl sm:text-2xl font-semibold sm:font-bold text-center">Experience</h2>
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }} className=" text-xl sm:text-2xl font-semibold sm:font-bold text-center">Experience</motion.h2>
       <div className="flex flex-col ">
         {ExperienceData.map((exp) => (
           <ExperienceCard key={exp.id} {...exp} />

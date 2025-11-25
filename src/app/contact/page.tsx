@@ -1,5 +1,8 @@
+"use client"
+
 import Image from "next/image";
 import { ContactData } from "../../lib/ContactData";
+import { motion } from "motion/react";
 
 export default function Contact() {
   return (
@@ -10,8 +13,16 @@ export default function Contact() {
       <h2 className="text-xl sm:text-2xl font-semibold sm:font-bold text-center">Contact</h2>
 
       <div className="flex gap-2 sm:gap-4 md:gap-6 flex-wrap justify-center">
-        {ContactData.map((contact) => (
-          <a
+        {ContactData.map((contact, index) => (
+          <motion.a
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ 
+              duration: 0.5,
+              delay: index * 0.1, // Stagger delay based on index
+              ease: "easeOut"
+            }} 
             key={contact.id}
             href={contact.link}
             target="_blank"
@@ -25,7 +36,7 @@ export default function Contact() {
               height={40}
               unoptimized
             />
-          </a>
+          </motion.a>
         ))}
       </div>
 
