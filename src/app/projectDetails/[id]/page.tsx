@@ -63,7 +63,7 @@ export default function ProjectDetailsPage() {
                     delay: 0.1,
                     ease: "easeOut"
                 }}
-                className="py-8 space-y-6"
+                className="py-8 space-y-6 px-0! sm:px-6 lg:px-8 "
             >
                 {/* Back button */}
                 <Link
@@ -116,7 +116,7 @@ export default function ProjectDetailsPage() {
                             {/* Gradient divider */}
                             <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
                             <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">Features</h2>
-                            <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto px-1">
+                            <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
                                 {project.features.map((feature, index) => (
                                     <motion.div
                                         key={index}
@@ -127,7 +127,7 @@ export default function ProjectDetailsPage() {
                                             delay: index * 0.1,
                                             ease: "easeOut"
                                         }}
-                                        className="flex flex-col gap-3 rounded-lg border border-gray-700/50 p-5 bg-gray-800/50 hover:bg-gray-800 transition-colors w-full md:w-[calc(50%-0.75rem)]"
+                                        className="flex flex-col gap-3 rounded-lg border border-gray-700/50 hover:border-gray-400 p-5 hover:bg-gray-800/60 transition-colors w-full md:w-[calc(50%-0.75rem)]"
                                     >
                                         <h3 className="text-sm font-bold text-gray-200">{feature.category}</h3>
                                         <ul className="space-y-2">
@@ -218,7 +218,7 @@ export default function ProjectDetailsPage() {
                             <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
                             <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">Team</h2>
-                            <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto px-4">
+                            <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
                                 {project.team.map((member, index) => (
                                     <motion.div
                                         key={index}
@@ -229,7 +229,7 @@ export default function ProjectDetailsPage() {
                                             delay: index * 0.1,
                                             ease: "easeOut"
                                         }}
-                                        className="flex flex-col items-center gap-2 rounded-lg border border-gray-700/50 p-4 bg-gray-800/50 hover:bg-gray-800 transition-colors w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.67rem)]"
+                                        className="flex flex-col items-center gap-2 rounded-lg border border-gray-700/50 hover:border-gray-400 p-4  hover:bg-gray-800/50 transition-colors w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.67rem)]"
                                     >
                                         <h3 className="text-sm font-semibold text-gray-200">{member.name}</h3>
                                         <p className="text-xs text-gray-400">{member.role}</p>
