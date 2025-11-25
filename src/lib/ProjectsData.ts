@@ -9,13 +9,17 @@ export interface Project {
   }[];
   link: string;
   github: string;
-  team: {
+  team?: {
     name: string;
     role: string;
   }[];
   features?: {
     category: string;
     items: string[];
+  }[];
+  architecture?: {
+    item: string;
+    description: string;
   }[];
   message: string;
 }

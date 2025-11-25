@@ -145,6 +145,33 @@ export default function ProjectDetailsPage() {
                     </>
                 )}
 
+                {/* Architecture Section - Only show if architecture exists */}
+                {project.architecture && (
+                    <>
+                        <div className="space-y-4">
+                            {/* Gradient divider */}
+                            <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
+
+                            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">System Architecture</h2>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    duration: 0.5,
+                                    delay: 0.2,
+                                    ease: "easeOut"
+                                }}
+                                className="max-w-4xl mx-auto rounded-lg border border-gray-700/50 hover:border-gray-400 p-6 bg-gray-800/50 hover:bg-gray-800/60 transition-colors overflow-x-auto"
+                            >
+                                <pre className="text-xs sm:text-sm text-gray-300 font-mono leading-relaxed whitespace-pre">
+                                    {/* {project.architecture} */}
+                                </pre>
+                            </motion.div>
+                        </div>
+                    </>
+                )}
+
                 {/* Images gallery */}
                 <div className="space-y-4">
 
