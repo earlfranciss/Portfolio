@@ -69,8 +69,8 @@ const StatusModal: React.FC<StatusModalProps> = ({ isOpen, type, title, message,
           <button
             onClick={onClose}
             className={`w-full py-3 text-base rounded-lg font-semibold transition ${type === 'success'
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-red-600 text-white hover:bg-red-700'
+              ? 'bg-green-600 text-white hover:bg-green-700'
+              : 'bg-red-600 text-white hover:bg-red-700'
               }`}
           >
             {type === 'success' ? 'Great, thanks!' : 'Try Again'}
@@ -91,6 +91,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
   const [view, setView] = useState('calendar');
   const [busyTimes, setBusyTimes] = useState<BusyTime[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [loadingAvailability, setLoadingAvailability] = useState(false);
   const [monthBusyTimes, setMonthBusyTimes] = useState<{ [key: string]: BusyTime[] }>({}); // ✅ Store busy times for all days
   const [statusModal, setStatusModal] = useState<{
@@ -436,6 +437,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
+    setIsLoading(true);
+
     const bookingData = {
       date: `${currentMonth.getFullYear()}-${(currentMonth.getMonth() + 1)
         .toString()
@@ -484,6 +487,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
         title: "Error Occurred",
         message: "Something went wrong. Please try again later.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -566,7 +571,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="pt-4 border-t border-gray-300 mt-4 text-xs sm:text-sm">
-            <p className="mb-1">Prefer async? Shoot me an email at</p>
+            <p className="mb-1 text-gray-400">Prefer async? Shoot me an email at</p>
             <a href="mailto:earlfrancisong@gmail.com" className="text-blue-600 hover:underline text-xs sm:text-sm">
               earlfrancisong@gmail.com
             </a>
@@ -672,8 +677,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                       onClick={() => handleTimeClick(time)}
                       disabled={!isTimeSlotAvailable(time)}
                       className={`w-full py-2 px-3 sm:px-4 text-xs sm:text-sm border-2 rounded-lg transition text-center font-medium ${isTimeSlotAvailable(time)
-                          ? 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700'
-                          : 'border-gray-100 bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700'
+                        : 'border-gray-100 bg-gray-100 text-gray-400 cursor-not-allowed'
                         }`}
                     >
                       {time}
@@ -688,6 +693,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               <div className="space-y-3">
                 <button
                   onClick={() => setView('time')}
+                  disabled={isLoading}
                   className="text-xs sm:text-sm text-blue-600 hover:underline"
                 >
                   ← Back to time selection
@@ -699,13 +705,39 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 {/* Form Inputs */}
                 <div className="space-y-2">
                   <label className="block text-xs font-medium text-gray-700 mb-1"> Name * </label>
-                  <input className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+                  <input disabled={isLoading} className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
                   <label className="block text-xs font-medium text-gray-700 mb-1"> Email * </label>
-                  <input className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                  <input disabled={isLoading} className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
                   <label className="block text-xs font-medium text-gray-700 mb-1"> What would you like to discuss? (optional) </label>
-                  <textarea className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none" rows={3} placeholder="Message" value={message} onChange={e => setMessage(e.target.value)} />
-                  <button onClick={handleBooking} disabled={!name || !email} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm sm:text-base font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed">
-                    Confirm Booking
+                  <textarea disabled={isLoading} className="w-full text-xs sm:text-sm px-3 py-2 text-black border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none" rows={3} placeholder="Message" value={message} onChange={e => setMessage(e.target.value)} />
+                  <button onClick={handleBooking} disabled={!name || !email || isLoading} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm sm:text-base font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center">
+                    {isLoading ? (
+                      <>
+                        <svg
+                          className="animate-spin mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Confirming...
+                      </>
+                    ) : (
+                      "Confirm Booking"
+                    )}
                   </button>
                 </div>
               </div>

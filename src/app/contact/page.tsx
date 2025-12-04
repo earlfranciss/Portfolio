@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { ContactData } from "../../lib/ContactData";
 import { motion } from "motion/react";
+import Separator from "@/components/Separator";
 
 export default function Contact() {
   return (
     <section id="contact" className="scroll-mt-24 relative space-y-6 pt-6 pb-8">
       {/* Gradient top border */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
-
+      <Separator />
+      
       <h2 className="text-xl sm:text-2xl font-semibold sm:font-bold text-center">Contact</h2>
 
       <div className="flex gap-2 sm:gap-4 md:gap-6 flex-wrap justify-center">

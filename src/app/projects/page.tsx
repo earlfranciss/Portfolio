@@ -3,6 +3,7 @@
 import ProjectCard from "@/components/ProjectCard";
 import { ProjectData } from "../../lib/ProjectsData";
 import { motion } from "motion/react";
+import Separator from "@/components/Separator";
 
 const bgColors = [
   "hover:bg-gradient-to-b from-purple-900/50 to-black/90 hover:from-blue-900/60 hover:to-black/40",
@@ -15,7 +16,7 @@ export default function Projects() {
   return (
     <section id="projects" className="scroll-mt-24 relative space-y-6 pt-6 pb-8">
       {/* Gradient top border */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
+      <Separator />
 
       <motion.h2
         initial={{ opacity: 0, y: 20 }}

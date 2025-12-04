@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import GitHubCalendar from "react-github-calendar";
 import { motion } from "motion/react";
+import Separator from "@/components/Separator";
 
 interface Repo {
   name: string;
@@ -36,8 +37,8 @@ export default function Github() {
   return (
     <section id="github" className="scroll-mt-24 relative space-y-8 pt-6 pb-12">
       {/* Gradient top border */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
-
+      <Separator />
+      
       {/* GitHub Title */}
       <Link
         href="https://github.com/earlfranciss"
@@ -102,7 +103,7 @@ function RepoCard({ repo }: { repo: Repo }) {
       href={repo.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block border border-gray-700/40 rounded-xl p-4 hover:border-gray-400 hover:bg-gray-800/20 transition-all duration-300"
+      className="block border border-gray-700/50 rounded-xl p-4 hover:border-gray-400 hover:bg-gray-800/20 transition-all duration-300"
     >
       <h4 className="text-base font-semibold mb-1">{repo.name}</h4>
       <p className="text-xs text-gray-400 line-clamp-2">{repo.description}</p>
