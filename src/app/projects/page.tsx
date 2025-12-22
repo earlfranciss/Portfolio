@@ -4,6 +4,7 @@ import ProjectCard from "@/components/ProjectCard";
 import { ProjectData } from "../../lib/ProjectsData";
 import { motion } from "motion/react";
 import Separator from "@/components/Separator";
+import FadeInSection from "@/components/FadeInSection";
 
 const bgColors = [
   "hover:bg-gradient-to-b from-purple-900/50 to-black/90 hover:from-blue-900/60 hover:to-black/40",
@@ -25,11 +26,13 @@ export default function Projects() {
         className=" text-xl sm:text-2xl font-semibold sm:font-bold text-center">Projects</motion.h2>
       <div className="flex flex-col gap-8">
         {ProjectData.map((proj, index) => (
-          <ProjectCard
-            key={proj.id}
-            project={proj}
-            bgColor={bgColors[index % bgColors.length]}
-          />
+          <FadeInSection key={proj.id}>
+            <ProjectCard
+              key={proj.id}
+              project={proj}
+              bgColor={bgColors[index % bgColors.length]}
+            />
+          </FadeInSection>
         ))}
       </div>
     </section>
