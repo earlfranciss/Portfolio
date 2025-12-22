@@ -22,9 +22,45 @@ export default function Header() {
           ease: "easeOut"
         }}
         className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+        {/* <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
+        </div> */}
+        <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+          <i>E</i>
+
+          {/* Santa Hat */}
+          <svg
+            className="absolute -top-3 -right-3 w-8 h-8 rotate-35"
+            viewBox="0 0 64 64"
+            fill="none"
+          >
+            {/* Hat body */}
+            <path
+              d="M6 36c14-22 16-22 46-6l-6 10c-14-8-26-8-40 0z"
+              fill="#DC2626"
+            />
+
+            {/* White brim */}
+            <rect
+              x="6"
+              y="34"
+              width="44"
+              height="8"
+              rx="4"
+              fill="white"
+            />
+
+            {/* Pom-pom */}
+            <circle
+              cx="52"
+              cy="30"
+              r="5"
+              fill="white"
+            />
+          </svg>
         </div>
+
+
         <div>
           <h1 className="text-base font-bold text-gray-100">Earl Francis Ong</h1>
           <p className="text-xs font-serif italic text-gray-400">Software Engineer</p>
@@ -93,14 +129,14 @@ export default function Header() {
       {/* Mobile dropdown menu */}
       {menuOpen && (
         <motion.div
-        initial={{ opacity: 0}}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{
-          duration: 0.5,
-          delay: 0.1,
-          ease: "easeOut"
-        }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.1,
+            ease: "easeOut"
+          }}
           className="
             sm:hidden absolute top-full left-0 w-full
             backdrop-blur-md bg-zinc-900
