@@ -21,10 +21,10 @@ export default function Home() {
           pointerEvents: "none",
         }}
         color="#daeeffff"
-        snowflakeCount={400}
+        snowflakeCount={250}
         speed={[2, 4]}
         wind={[1, 4]}
-        radius={[0.5, 3.5]}
+        radius={[0.5, 2.5]}
       />
       <About />
       <Projects />
