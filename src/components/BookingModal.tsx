@@ -544,7 +544,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
         {/* Left Panel */}
         <div className="w-full md:w-2/5 bg-gray-50 p-8 sm:p-6 md:p-8 border-b md:border-b-0 md:border-r border-gray-200 flex-shrink-0">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-695 to-gray-800 rounded-full flex items-center justify-center text-white font-bold">
               EF
             </div>
             <div className="text-sm text-gray-600">Earl Francis Ong</div>

@@ -10,7 +10,7 @@ import Snowfall from "react-snowfall";
 export default function Home() {
   return (
     <section className="space-y-4">
-      <Snowfall
+      {/* <Snowfall
         style={{
           position: "fixed",
           top: 0,
@@ -25,7 +25,7 @@ export default function Home() {
         speed={[2, 4]}
         wind={[1, 4]}
         radius={[0.5, 2.5]}
-      />
+      /> */}
       <About />
       <Projects />
       <Experience />

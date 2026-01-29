@@ -174,6 +174,7 @@ async function sendConfirmationEmail({
   const mailOptions = {
     from: `"Earl Francis Ong" <${process.env.MY_BOOKING_EMAIL}>`,
     to,
+    cc: process.env.MY_BOOKING_EMAIL,
     subject: "Your Design Chat is Booked!",
     html: `
       <h2>Hi ${name},</h2>

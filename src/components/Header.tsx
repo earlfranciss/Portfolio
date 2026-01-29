@@ -22,25 +22,26 @@ export default function Header() {
           ease: "easeOut"
         }}
         className="flex items-center gap-3">
-        {/* <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+        <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
-        </div> */}
-        <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+        </div>
+
+        {/* <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
 
-          {/* Santa Hat */}
+          Santa Hat 
           <svg
             className="absolute -top-3 -right-3 w-8 h-8 rotate-35"
             viewBox="0 0 64 64"
             fill="none"
           >
-            {/* Hat body */}
+             Hat body 
             <path
               d="M6 36c14-22 16-22 46-6l-6 10c-14-8-26-8-40 0z"
               fill="#DC2626"
             />
 
-            {/* White brim */}
+             White brim 
             <rect
               x="6"
               y="34"
@@ -50,7 +51,7 @@ export default function Header() {
               fill="white"
             />
 
-            {/* Pom-pom */}
+             Pom-pom 
             <circle
               cx="52"
               cy="30"
@@ -58,7 +59,7 @@ export default function Header() {
               fill="white"
             />
           </svg>
-        </div>
+        </div> */}
 
 
         <div>

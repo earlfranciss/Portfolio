@@ -11,7 +11,7 @@ export default function ProjectDetailsLayout({
   return (
     <div className="min-h-screen flex justify-center px-4 sm:px-6 lg:px-8">
       <main className="w-full max-w-4xl px-4 mx-auto">
-        <Snowfall
+        {/* <Snowfall
           style={{
             position: "fixed",
             top: 0,
@@ -26,7 +26,7 @@ export default function ProjectDetailsLayout({
           speed={[2, 4]}
           wind={[1, 4]}
           radius={[0.5, 2.5]}
-        />
+        /> */}
         {children}
       </main>
     </div>
