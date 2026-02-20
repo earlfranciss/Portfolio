@@ -3,11 +3,12 @@ import { Experience } from "@/components/ExperienceCard";
 export const ExperienceData: Experience[] = [
   {
     id: 1,
-    title: "Associate Software Engineer - N-Pax Cebu Corporation",
+    title: "Junior Software Engineer - N-Pax Cebu Corporation",
     description: `
-    Currently under intensive training program focused on full-stack development and soft skills.
-    Learned C#, ASP.NET Core, React, MSSQL, EF Core, Tailwind CSS, Git, Docker, and Azure DevOps.
-    Collaborating in multiple projects following Agile methodology.
+    Completed an intensive full-stack development training program with hands-on experience in 
+    C#, ASP.NET Core, React, MSSQL, EF Core, Tailwind CSS, Git, Docker, and Azure DevOps, collaborating on Agile-based projects. 
+    Currently pursuing Microsoft Azure Administrator Associate and Azure Solutions Architect Expert certifications 
+    to support the company's goal of becoming a Microsoft Solutions Partner.
     `,
     date: "Jul 2025 - Present",
     link: "https://www.n-pax.com/",
