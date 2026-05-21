@@ -28,6 +28,12 @@ export default function BurgerMenu({ isMobile = false }: { isMobile?: boolean })
         Experience
       </Link>
       <Link
+        href="#certificates"
+        className="text-sm hover:text-gray-200 hover:scale-110 transition-all"
+      >
+        Certifications
+      </Link>
+      <Link
         href="#github"
         className="text-sm hover:text-gray-200 hover:scale-110 transition-all"
       >

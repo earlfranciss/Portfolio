@@ -5,6 +5,7 @@ import Projects from "./projects/page";
 import Experience from "./experience/page";
 import Github from "./github/page";
 import Contact from "./contact/page";
+import Certifications from "./certificates/page";
 import Snowfall from "react-snowfall";
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
       <About />
       <Projects />
       <Experience />
+      <Certifications />
       <Github />
       <Contact />
     </section>

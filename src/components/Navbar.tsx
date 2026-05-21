@@ -14,6 +14,9 @@ export default function Navbar() {
         <Link href="#experience" className="text-sm transition-all duration-300 hover:text-gray-200 hover:scale-110">
           Experience
         </Link>
+        <Link href="#certificates" className="text-sm transition-all duration-300 hover:text-gray-200 hover:scale-110">
+          Certificationshello
+        </Link>
         <Link href="#github" className="text-sm transition-all duration-300 hover:text-gray-200 hover:scale-110">
           GitHub
         </Link>
