@@ -45,7 +45,7 @@ export const ProjectData: Project[] = [
       { name: "Flask", icon: "https://skillicons.dev/icons?i=flask" },
       { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
     ],
-    github: "https://github.com/earlfranciss/ProductivIO",
+    github: "https://github.com/earlfranciss/SwiftShield",
     link: "https://github.com/earlfranciss/SwiftShield",
     team: [
       { name: "Miranda Lois Arriola", role: "Project Manager" },
@@ -119,8 +119,8 @@ export const ProjectData: Project[] = [
       { name: "ASP.NET Core", icon: "https://skillicons.dev/icons?i=dotnet" },
       { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" },
     ],
-    github: "https://github.com/earlfranciss/ProductivIO",
-    link: "https://github.com/earlfranciss/ProductivIO",
+    github: "https://github.com/earlfranciss/ProductivIO-Frontend",
+    link: "https://github.com/earlfranciss/ProductivIO-Frontend",
     team: [],
     features: [
       {
