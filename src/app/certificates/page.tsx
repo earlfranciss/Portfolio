@@ -58,11 +58,16 @@ export default function CredentialsPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }} className=" text-xl sm:text-2xl font-semibold sm:font-bold text-center">Certifications</motion.h2>
        
-        <div className="flex flex-col">
-            {CertificationData.map((cert) => (
-                <CertificationCard key={cert.id} {...cert} />
-            ))}
+       <div className="flex flex-wrap justify-center gap-4">
+    {CertificationData.map((cert) => (
+        <div
+            key={cert.id}
+            className="w-full sm:w-[calc(50%-0.5rem)]"
+        >
+            <CertificationCard {...cert} />
         </div>
+    ))}
+</div>
 
 
 

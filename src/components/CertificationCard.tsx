@@ -49,29 +49,32 @@ export default function CertificationCard({
                            hover:border-gray-400 hover:bg-gray-800/20 transition-all duration-300 mb-4"
             >
                 <div className="p-3 sm:p-4 space-y-4">
-                    
+
                     {/* Header */}
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center justify-between gap-3">
-                            
+
                             <div className="flex items-center gap-2 min-w-0">
-                                <Badge variant="secondary" className="text-xs sm:text-sm">
+                                <Badge variant="secondary" className="text-xs sm:text-sm text-center">
                                     {badge}
                                 </Badge>
 
-                                <h4 className="text-sm sm:text-base font-semibold text-slate-200 leading-snug truncate">
+                                <h4 className="text-sm sm:text-base font-semibold text-slate-200 leading-snug ">
                                     {title}
                                 </h4>
                             </div>
 
+
+                        </div>
+
+                        <div className="flex justify-between shrink-0">
+                            <p className="text-xs sm:text-sm text-gray-400 whitespace-nowrap">
+                                {issuer}
+                            </p>
                             <p className="text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">
                                 {date}
                             </p>
                         </div>
-
-                        <p className="text-xs sm:text-sm text-gray-400 text-left">
-                            {issuer}
-                        </p>
                     </div>
 
                     {/* Skills */}
@@ -98,16 +101,16 @@ export default function CertificationCard({
                         )}
                     </div>
 
-                    {/* Image (responsive height) */}
-                    <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-lg overflow-hidden">
-                        <Image
-                            src={image}
-                            alt={title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                        />
-                    </div>
+                    {/* Image */}
+<div className="relative w-full max-w-[500px] mx-auto aspect-[1039/546] rounded-lg overflow-hidden bg-gray-900">
+    <Image
+        src={image}
+        alt={title}
+        fill
+        unoptimized
+        className="object-contain"
+    />
+</div>
                 </div>
             </Link>
         </motion.div>
