@@ -1,23 +1,28 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Project } from "../lib/ProjectsData";
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import ImageSlider from "./ImageSlider";
-import { motion } from "motion/react"
+import { motion } from "motion/react";
 
 interface ProjectCardProps {
   project: Project;
   bgColor?: string;
 }
 
-export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30" }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  bgColor = "hover:bg-purple-900/30",
+}: ProjectCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
+
     setMousePosition({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
@@ -25,13 +30,16 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
   };
 
   return (
-    <div className="p-2">
+    <Link
+      href={`/projectDetails/${project.id}`}
+      className="block"
+    >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.5 }}
-        className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border hover:border-gray-400/60 shadow-lg shadow-white/10 hover:shadow-4xl hover:shadow-white/25 transition-shadow duration-300 ${bgColor}`}
+        className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border-gray-400/60 shadow-lg shadow-white/10 hover:shadow-4xl hover:shadow-white/25 transition-shadow duration-300 ${bgColor}`}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -40,7 +48,11 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.08), transparent 40%)`,
+            background: `radial-gradient(
+              600px circle at ${mousePosition.x}px ${mousePosition.y}px,
+              rgba(255, 255, 255, 0.08),
+              transparent 40%
+            )`,
           }}
         />
 
@@ -49,19 +61,21 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
           <div className="relative flex flex-col sm:flex-row justify-between items-start gap-2 mt-1">
             {/* Title */}
             <div className="flex flex-col gap-2 w-full sm:w-auto">
-              <h3 className="text-lg font-medium">{project.title}</h3>
+              <h3 className="text-lg font-medium">
+                {project.title}
+              </h3>
             </div>
 
             {/* Arrow */}
             <div className="absolute top-0 right-0 sm:static sm:ml-4">
-              <Link href={`/projectDetails/${project.id}`}>
-                <MoveRight className="text-gray-200" />
-              </Link>
+              <MoveRight className="text-gray-200" />
             </div>
           </div>
 
-          <p className="text-gray-500 py-2 text-base">{project.description}</p>
-          
+          <p className="text-gray-500 py-2 text-base">
+            {project.description}
+          </p>
+
           {/* Tech Stack */}
           <div className="flex flex-wrap sm:flex-row items-center gap-2">
             {project.techStack.map((tech, index) => (
@@ -69,11 +83,17 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 30 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.2,
+                }}
                 key={index}
                 className="relative flex items-center gap-2 rounded border border-gray-700/50 px-2 py-1 hover:bg-gray-700 transition-colors duration-200"
               >
-                <p className="text-xs text-gray-400">{tech.name}</p>
+                <p className="text-xs text-gray-400">
+                  {tech.name}
+                </p>
+
                 <img
                   src={tech.icon}
                   alt={tech.name}
@@ -83,9 +103,8 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
               </motion.div>
             ))}
           </div>
-          
+
           <div className="mt-3">
-            {/* ✅ Pass isHovered prop to ImageSlider */}
             <ImageSlider
               images={project.images}
               title={project.title}
@@ -94,6 +113,6 @@ export default function ProjectCard({ project, bgColor = "hover:bg-purple-900/30
           </div>
         </div>
       </motion.div>
-    </div>
+    </Link>
   );
 }
