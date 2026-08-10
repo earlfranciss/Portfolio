@@ -93,7 +93,7 @@ export default function Header() {
         }}
         className="hidden sm:flex items-center gap-4">
         <Link
-          href="https://www.linkedin.com/in/earl-francis-o-3370a3205"
+          href="https://www.linkedin.com/in/earlfrancisong08/"
           target="_blank"
           className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-200 hover:scale-105 transition-all"
         >
@@ -148,7 +148,7 @@ export default function Header() {
         >
           <BurgerMenu isMobile />
           <Link
-            href="https://www.linkedin.com/in/earl-francis-o-3370a3205"
+            href="https://www.linkedin.com/in/earlfrancisong08/"
             target="_blank"
             className="text-gray-100 text-sm flex items-center gap-1 hover:scale-105 transition"
             onClick={() => setMenuOpen(false)}
