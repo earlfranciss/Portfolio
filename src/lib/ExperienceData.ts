@@ -5,10 +5,9 @@ export const ExperienceData: Experience[] = [
     id: 1,
     title: "Junior Software Engineer - N-Pax Cebu Corporation",
     description: `
-    Completed an intensive full-stack development training program with hands-on experience in 
-    C#, ASP.NET Core, React, MSSQL, EF Core, Tailwind CSS, Git, Docker, and Azure DevOps, collaborating on Agile-based projects. 
-    Currently pursuing Microsoft Azure Administrator Associate and Azure Solutions Architect Expert certifications 
-    to support the company's goal of becoming a Microsoft Solutions Partner.
+    Developed and supported enterprise applications using C#, ASP.NET Core, React, MSSQL, and related technologies.
+    Apply Azure cloud technologies in solution planning and development, with a focus on cloud administration, 
+    architecture, networking, identity, governance, and scalable cloud solutions.
     `,
     date: "Jul 2025 - Present",
     link: "https://www.n-pax.com/",
