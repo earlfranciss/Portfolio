@@ -33,8 +33,8 @@ export default function Footer() {
       />
 
       <div className="w-full text-xs sm:text-sm flex justify-between max-w-5xl">
-        <div>Earl Francis - © 2026</div>
-        <div className="italic text-sm">Sic Parvis Magna</div>
+        <div>Earl Francis - © 2025</div>
+        <div className="italic text-sm text-center">Sic Parvis Magna</div>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
