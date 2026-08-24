@@ -24,10 +24,17 @@ export default function Header() {
           ease: "easeOut"
         }}
         className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+        {/* <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
-        </div>
+        </div> */}
 
+        <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center">
+  <img
+    src="/bloub-blue.svg"
+    alt="E"
+    className="w-full h-full object-contain"
+  />
+</div>
         {/* <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
 
