@@ -12,6 +12,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md flex justify-between items-center py-4 px-6 shadow-sm">
       {/* Logo / Name */}
+      <Link href="#about">
+      
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -67,6 +69,7 @@ export default function Header() {
           <p className="text-xs font-serif italic text-gray-400">Software Engineer</p>
         </div>
       </motion.div>
+      </Link>
 
       {/* Navbar: visible only on larger screens */}
       <motion.div
