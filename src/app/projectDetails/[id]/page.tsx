@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import * as React from "react"
@@ -145,33 +146,107 @@ export default function ProjectDetailsPage() {
                     </>
                 )}
 
-                {/* Architecture Section - Only show if architecture exists */}
+                {/* Architecture Section */}
                 {project.architecture && (
-                    <>
-                        <div className="space-y-4">
-                            {/* Gradient divider */}
-                            <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
+                    <div className="space-y-8">
 
-                            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">System Architecture</h2>
+                        {/* Gradient divider */}
+                        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400/70 to-transparent" />
 
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    duration: 0.5,
-                                    delay: 0.2,
-                                    ease: "easeOut"
-                                }}
-                                className="max-w-4xl mx-auto rounded-lg border border-gray-700/50 hover:border-gray-400 p-6 bg-gray-800/50 hover:bg-gray-800/60 transition-colors overflow-x-auto"
-                            >
-                                <pre className="text-xs sm:text-sm text-gray-300 font-mono leading-relaxed whitespace-pre">
-                                    {/* {project.architecture} */}
-                                </pre>
-                            </motion.div>
-                        </div>
-                    </>
+                        {/* Section Title */}
+                        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">
+                            System Architecture
+                        </h2>
+
+                        {/* Architecture Diagram */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.5,
+                                ease: "easeOut"
+                            }}
+                            className="max-w-5xl mx-auto rounded-lg border border-gray-700/50
+                       hover:border-gray-400 p-4 sm:p-6
+                       bg-gray-800/50 hover:bg-gray-800/60
+                       transition-colors"
+                        >
+                            <img
+                                src={project.architecture.image}
+                                alt={`${project.title} system architecture`}
+                                className="w-full h-auto rounded-md object-contain"
+                            />
+                        </motion.div>
+
+                        {/* Architecture Explanation */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: 0.15,
+                                ease: "easeOut"
+                            }}
+                            className="max-w-4xl mx-auto"
+                        >
+                            <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-3">
+                                Architecture Overview
+                            </h3>
+
+                            <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                                {project.architecture.explanation}
+                            </p>
+                        </motion.div>
+
+                        {/* System Flow */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: 0.25,
+                                ease: "easeOut"
+                            }}
+                            className="max-w-4xl mx-auto"
+                        >
+                            <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-5">
+                                System Flow
+                            </h3>
+
+                            <div className="space-y-4">
+                                {project.architecture.flow.map((step, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            duration: 0.3,
+                                            delay: 0.3 + index * 0.08
+                                        }}
+                                        className="flex gap-4"
+                                    >
+                                        {/* Step Number */}
+                                        <div className="flex-shrink-0 w-8 h-8 rounded-full
+                                        border border-gray-600
+                                        flex items-center justify-center
+                                        text-sm font-semibold text-gray-300">
+                                            {index + 1}
+                                        </div>
+
+                                        {/* Step Description */}
+                                        <div className="flex-1">
+                                            <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                                                {step}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                    </div>
                 )}
-
+                
                 {/* Images gallery */}
                 <div className="space-y-4">
 
