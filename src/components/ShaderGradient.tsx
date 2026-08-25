@@ -30,7 +30,6 @@ export default function ShaderGradientBackground() {
           color3="#000409"
 
           envPreset="city"
-          frameRate={10}
           grain="off"
           lightType="env"
 
