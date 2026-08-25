@@ -13,29 +13,29 @@ export default function Header() {
     <header className="sticky top-0 z-50 backdrop-blur-md flex justify-between items-center py-4 px-6 shadow-sm">
       {/* Logo / Name */}
       <Link href="#about">
-      
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: 20 }}
-        transition={{
-          duration: 0.5,
-          delay: 0.1,
-          ease: "easeOut"
-        }}
-        className="flex items-center gap-3">
-        {/* <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.1,
+            ease: "easeOut"
+          }}
+          className="flex items-center gap-3">
+          {/* <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-890 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
         </div> */}
 
-        <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center">
-  <img
-    src="/bloub-blue.svg"
-    alt="E"
-    className="w-full h-full object-contain"
-  />
-</div>
-        {/* <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
+          <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center">
+            <img
+              src="/bloub.svg"
+              alt="E"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          {/* <div className="relative w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xl font-bold font-serif">
           <i>E</i>
 
           Santa Hat 
@@ -71,11 +71,11 @@ export default function Header() {
         </div> */}
 
 
-        <div>
-          <h1 className="text-base font-bold text-gray-100">Earl Francis Ong</h1>
-          <p className="text-xs font-serif italic text-gray-400">Software Engineer</p>
-        </div>
-      </motion.div>
+          <div>
+            <h1 className="text-base font-bold text-gray-100">Earl Francis Ong</h1>
+            <p className="text-xs font-serif italic text-gray-400">Software Engineer</p>
+          </div>
+        </motion.div>
       </Link>
 
       {/* Navbar: visible only on larger screens */}
