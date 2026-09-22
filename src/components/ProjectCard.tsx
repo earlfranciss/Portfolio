@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Project } from "../lib/ProjectsData";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
-import ImageSlider from "./ImageSlider";
+
 import { motion } from "motion/react";
 
 interface ProjectCardProps {
@@ -18,7 +18,6 @@ export default function ProjectCard({
   bgColor = "hover:bg-purple-900/30",
 }: ProjectCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -41,8 +40,6 @@ export default function ProjectCard({
         transition={{ duration: 0.5 }}
         className={`relative backdrop-blur-sm rounded-2xl pt-4 pb-0 p-6 overflow-hidden group border border-gray-800/80 hover:border-gray-400/60 shadow-lg shadow-white/10 hover:shadow-4xl hover:shadow-white/25 transition-shadow duration-300 ${bgColor}`}
         onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Spotlight effect */}
         <div
@@ -104,13 +101,17 @@ export default function ProjectCard({
             ))}
           </div>
 
-          <div className="mt-3">
-            <ImageSlider
-              images={project.images}
-              title={project.title}
-              isHovered={isHovered}
-            />
-          </div>
+        
+{/* Project Image */}
+<div className="my-4 h-84 w-full overflow-hidden rounded-xl flex items-center justify-center ">
+  <img
+    src={project.images[0]}
+    alt={project.title}
+    className="h-full w-full object-contain"
+  />
+</div>
+
+
         </div>
       </motion.div>
     </Link>
