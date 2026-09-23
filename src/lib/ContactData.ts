@@ -8,7 +8,7 @@ export const ContactData: Contact[] = [
     {
         id: 1,
         logo: "https://skillicons.dev/icons?i=linkedin",
-        link: "https://www.linkedin.com/in/earl-francis-o-3370a3205",
+        link: "https://www.linkedin.com/in/earlfrancisong08/",
     },
     {
         id: 2,
