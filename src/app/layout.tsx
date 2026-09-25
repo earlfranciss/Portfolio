@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next"
-// import ShaderBackground from "@/components/ShaderGradient";
+import ShaderBackground from "@/components/ShaderGradient";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
 import { cn } from "@/styles/lib/utils";
 import { LightRays } from "@/components/ui/light-rays"
@@ -33,7 +33,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className={`${inter.className} antialiased text-white bg-[#09090b]`}>
-        {/* <ShaderBackground /> */}
+        <ShaderBackground />
 
 
 
